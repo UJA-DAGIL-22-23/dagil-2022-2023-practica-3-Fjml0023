@@ -6,4 +6,6 @@ Alumno de Ingenieria Informática de la Universidad de Jaén.
 * **Web**: Sin web
 * **Usuario de GitHub**: Fjml0023
 * **URL de GitHub**: https://github.com/Fjml0023
-* **Trello**: https://trello.com/b/f9VBcjc5/practica1-da
+* **Trello**: https://trello.com/b/kEY8Ub8H/practica3-da
+
+Mi deporte es: Natación Sincronizada
