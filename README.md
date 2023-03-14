@@ -10,7 +10,7 @@ Alumno de Ingenieria Informática de la Universidad de Jaén.
 
 Mi deporte es: Natación Sincronizada
 
-Fauna
+### Fauna
 Home de Fauna
 <img src='/Capturas_de_pantalla/Fauna/Home.JPG'>
 Pagina de la base de datos
@@ -18,6 +18,8 @@ Pagina de la base de datos
 Pagina de la coleccion
 <img src='/Capturas_de_pantalla/Fauna/Coleccion.JPG'>
 
+Documentos de la coleccion:
+```
 {
   nombre: "Juan",
   apellidos: "Osorio",
@@ -187,3 +189,4 @@ Pagina de la coleccion
   años_de_participacion_mundial: [2000, 2012, 2016],
   numero_de_participaciones_juegos_olimpicos: 6
 }
+```
