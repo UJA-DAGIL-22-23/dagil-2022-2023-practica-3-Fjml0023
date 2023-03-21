@@ -190,3 +190,6 @@ Documentos de la coleccion:
   numero_de_participaciones_juegos_olimpicos: 6
 }
 ```
+### Trello
+Tablero de Trello inicial
+<img src='/Capturas_de_pantalla/Trello/Tablero_de_trello_inicial.JPG'>
