@@ -96,7 +96,7 @@ const CB_MODEL_SELECTS = {
      * Prueba de conexión a la BBDD: devuelve todas las personas que haya en la BBDD.
      * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
      * @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
-     */
+     
     test_db: async (req, res) => {
         try {
             let personas = await client.query(
@@ -110,7 +110,7 @@ const CB_MODEL_SELECTS = {
             res.status(500).json({ error: error.description })
         }
     },
-
+*/
 }
 
 

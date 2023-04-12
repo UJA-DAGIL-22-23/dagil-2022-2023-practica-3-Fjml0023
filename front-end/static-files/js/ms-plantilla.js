@@ -108,6 +108,7 @@ Plantilla.procesarAcercaDe = function () {
 }
 
 /*MIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*/
+//HU 04: Ver un listado con todos los datos de todos los jugadores/equipos.---------------------------------
 Plantilla.recupera = async function (callBackFn) {
     let response = null
 
@@ -129,6 +130,7 @@ Plantilla.recupera = async function (callBackFn) {
         callBackFn(vectorDeportistas.data)
     }
 }
+
 // Funciones para mostrar como TABLE
 
 /**
@@ -146,17 +148,15 @@ Plantilla.cabeceraTable = function () {
 
 /**
  * Muestra la información de cada proyecto en un elemento TR con sus correspondientes TD
- * @param {proyecto} p Datos del proyecto a mostrar
+ * @param {deportista} p Datos del deportista a mostrar
  * @returns Cadena conteniendo todo el elemento TR que muestra el proyecto.
  */
 Plantilla.cuerpoTr = function (p) {
     const d = p.data
-    const ini = d.inicio;
-    const fin = d.final;
 
-    return `<tr title="${p.ref['@ref'].id}">
+    return `<tr title="${p.ref['@ref'].NOMBRE}">
     <td>${d.NOMBRE}</td>
-    <td><em>${d.APELLIDOS}</em></td>
+    <td>${d.APELLIDOS}</td>
     <td>${d.FECHA_NAC}</td>
     <td>${d.NACIONALIDAD}</td>
     <td>${d.AÑOS_MUNDIAL}</td>
@@ -190,9 +190,38 @@ Plantilla.imprime = function (vector) {
 
 Plantilla.listar = function () {
    this.recupera(this.imprime);
-Frontend.Article.actualizar("Listado de deportistas", msj)
-
 }
+//---------------------------------------------------------------------------------------
+//HU 02: Ver un listado solo con los nombres de todos los jugadores/equipos.----------
+Plantilla.listarnombre = function (){
+    this.recupera(this.imprimenombre);
+}
+Plantilla.nombretr = function (p) {
+    const d = p.data
+
+    return `<tr title="${p.ref['@ref'].NOMBRE}">
+    <td>${d.NOMBRE}</td>
+    </tr>
+    `;
+}
+
+Plantilla.imprimenombre = function (vector) {
+    //console.log( vector ) // Para comprobar lo que hay en vector
+    let msj = "";
+    msj += `<table class="listado-deportistas">
+    <thead>
+    <th>Nombre</th>
+    </thead>
+    <tbody>
+`;
+
+    vector.forEach(e => msj += Plantilla.nombretr(e))
+    msj += Plantilla.pieTable();
+
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar( "Listado de nombres de deportistas", msj )
+}
+//--------------------------------------------------------------------------------------
 
 
 
