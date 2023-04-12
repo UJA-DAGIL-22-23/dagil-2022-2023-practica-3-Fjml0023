@@ -46,6 +46,24 @@ router.get("/test_db", async (req, res) => {
     }
 });
 
+/** COSAS MIAS ATENCION A TODO EXPLOTANDO----------------------------------------------*/
+/**
+ * Devuelve todas las personas que hay en la BBDD
+ */
+router.get("/getTodas", async (req, res) => {
+    try {
+        await callbacks.getTodas(req, res)
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+router.param("idDeportista", (req, res, next, id) => {
+    next();
+});
+
+/** FIN DE LA EXPLOSION----------------------------------------------------------------*/
+
 
 // Exporto el módulo para poder usarlo en server
 module.exports = router;

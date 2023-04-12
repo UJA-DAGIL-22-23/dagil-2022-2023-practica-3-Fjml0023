@@ -107,5 +107,92 @@ Plantilla.procesarAcercaDe = function () {
     this.descargarRuta("/plantilla/acercade", this.mostrarAcercaDe);
 }
 
+/*MIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*/
+Plantilla.recupera = async function (callBackFn) {
+    let response = null
+
+    // Intento conectar con el microservicio deportistas
+    try {
+        const url = Frontend.API_GATEWAY + "/plantilla/getTodas"
+        response = await fetch(url)
+
+    } catch (error) {
+        alert("Error: No se han podido acceder al API Gateway")
+        console.error(error)
+        //throw error
+    }
+
+    // Muestro todas las persoans que se han descargado
+    let vectorDeportistas = null
+    if (response) {
+        vectorDeportistas = await response.json()
+        callBackFn(vectorDeportistas.data)
+    }
+}
+// Funciones para mostrar como TABLE
+
+/**
+ * Crea la cabecera para mostrar la info como tabla
+ * @returns Cabecera de la tabla
+ */
+Plantilla.cabeceraTable = function () {
+    return `<table class="listado-deportistas">
+        <thead>
+        <th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años_mundial</th><th>Num_Juegos_olimpicos</th>
+        </thead>
+        <tbody>
+    `;
+}
+
+/**
+ * Muestra la información de cada proyecto en un elemento TR con sus correspondientes TD
+ * @param {proyecto} p Datos del proyecto a mostrar
+ * @returns Cadena conteniendo todo el elemento TR que muestra el proyecto.
+ */
+Plantilla.cuerpoTr = function (p) {
+    const d = p.data
+    const ini = d.inicio;
+    const fin = d.final;
+
+    return `<tr title="${p.ref['@ref'].id}">
+    <td>${d.NOMBRE}</td>
+    <td><em>${d.APELLIDOS}</em></td>
+    <td>${d.FECHA_NAC}</td>
+    <td>${d.NACIONALIDAD}</td>
+    <td>${d.AÑOS_MUNDIAL}</td>
+    <td>${d.NUM_JUEGOS_OLIMPICOS}</td>
+    </tr>
+    `;
+}
+
+/**
+ * Pie de la tabla en la que se muestran las personas
+ * @returns Cadena con el pie de la tabla
+ */
+Plantilla.pieTable = function () {
+    return "</tbody></table>";
+}
+/**
+ * Función para mostrar en pantalla todos los proyectos que se han recuperado de la BBDD.
+ * @param {Vector_de_proyectos} vector Vector con los datos de los proyectos a mostrar
+ */
+Plantilla.imprime = function (vector) {
+    //console.log( vector ) // Para comprobar lo que hay en vector
+    let msj = "";
+    msj += Plantilla.cabeceraTable();
+    vector.forEach(e => msj += Plantilla.cuerpoTr(e))
+    msj += Plantilla.pieTable();
+
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar( "Listado de deportistas", msj )
+
+}
+
+Plantilla.listar = function () {
+   this.recupera(this.imprime);
+Frontend.Article.actualizar("Listado de deportistas", msj)
+
+}
+
 
 

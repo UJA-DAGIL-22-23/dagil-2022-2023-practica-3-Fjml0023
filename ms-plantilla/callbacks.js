@@ -14,10 +14,10 @@ const faunadb = require('faunadb'),
     q = faunadb.query;
 
 const client = new faunadb.Client({
-    secret: '¿¿¿ CLAVE SECRETA EN FAUNA PARA ESTA BBDD???',
+    secret: 'fnAE_A174fAAzEkhEp6r-GkvnsGMtDDMCEXZL2Oq',
 });
 
-const COLLECTION = "¿¿¿ COLECCION ???"
+const COLLECTION = "Deportistas"
 
 // CALLBACKS DEL MODELO
 
@@ -42,6 +42,56 @@ function CORS(res) {
  * Objeto que contiene las funciones callback para interactuar con el modelo (e.d., la BBDD)
  */
 const CB_MODEL_SELECTS = {
+
+
+/** COSAS MIAS ATENCION A TODO EXPLOTANDO----------------------------------------------*/
+
+    /**
+     * Prueba de conexión a la BBDD: devuelve todas las personas que haya en la BBDD.
+     * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
+     * @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
+     */
+    test_db: async (req, res) => {
+        try {
+            let deportistas = await client.query(
+                q.Map(
+                    q.Paginate(q.Documents(q.Collection(COLLECTION))),
+                    q.Lambda("X", q.Get(q.Var("X")))
+                )
+            )
+            CORS(res).status(200).json(deportistas)
+        } catch (error) {
+            CORS(res).status(500).json({ error: error.description })
+        }
+    },
+
+      /**
+     * Método para obtener todas los deportistas de la BBDD.
+     * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
+     * @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
+     */
+      getTodas: async (req, res) => {
+        try {
+            let deportistas = await client.query(
+                q.Map(
+                    q.Paginate(q.Documents(q.Collection(COLLECTION))),
+                    q.Lambda("X", q.Get(q.Var("X")))
+                )
+            )
+            // console.log( deportistas ) // Para comprobar qué se ha devuelto en deportistas
+            CORS(res)
+                .status(200)
+                .json(deportistas)
+        } catch (error) {
+            CORS(res).status(500).json({ error: error.description })
+        }
+    },
+
+/**COSAS NUEVASSSSSSSSSSSSSSSSSSS------------------------------ */
+
+/** FIN DE LA EXPLOSION----------------------------------------------------------------*/
+
+
     /**
      * Prueba de conexión a la BBDD: devuelve todas las personas que haya en la BBDD.
      * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
@@ -93,9 +143,9 @@ const CB_OTHERS = {
         try {
             CORS(res).status(200).json({
                 mensaje: "Microservicio MS Plantilla: acerca de",
-                autor: "¿¿¿ AUTOR ???",
-                email: "¿¿¿ EMAIL ???",
-                fecha: "¿¿¿ FECHA ???"
+                autor: "Francisco Javier Martinez Lomas",
+                email: "fjml0023@red.ujaen.es",
+                fecha: "14/03/2023"
             });
         } catch (error) {
             CORS(res).status(500).json({ error: error.description })
