@@ -154,13 +154,13 @@ Plantilla.cabeceraTable = function () {
 Plantilla.cuerpoTr = function (p) {
     const d = p.data
 
-    return `<tr title="${p.ref['@ref'].NOMBRE}">
-    <td>${d.NOMBRE}</td>
-    <td>${d.APELLIDOS}</td>
-    <td>${d.FECHA_NAC}</td>
-    <td>${d.NACIONALIDAD}</td>
-    <td>${d.AÑOS_MUNDIAL}</td>
-    <td>${d.NUM_JUEGOS_OLIMPICOS}</td>
+    return `<tr title="${p.ref['@ref'].id}">
+    <td>${d.nombre}</td>
+    <td>${d.apellidos}</td>
+    <td>${d.fecha_nacimiento.dia}/${d.fecha_nacimiento.mes}/${d.fecha_nacimiento.año}</td>
+    <td>${d.nacionalidad.provincia} ( ${d.nacionalidad.comunidad}-${d.nacionalidad.pais} )</td>
+    <td>${d.años_de_participacion_mundial}</td>
+    <td>${d.numero_de_participaciones_juegos_olimpicos}</td>
     </tr>
     `;
 }
@@ -199,8 +199,8 @@ Plantilla.listarnombre = function (){
 Plantilla.nombretr = function (p) {
     const d = p.data
 
-    return `<tr title="${p.ref['@ref'].NOMBRE}">
-    <td>${d.NOMBRE}</td>
+    return `<tr title="${p.ref['@ref'].id}">
+    <td>${d.nombre}</td>
     </tr>
     `;
 }
