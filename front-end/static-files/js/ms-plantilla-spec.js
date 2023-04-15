@@ -139,3 +139,62 @@ Esto afecta a los métodos:
  por tanto: para esta práctica, se pueden dejar SIN HACER.
 
  */
+
+ //HU 04: Ver un listado con todos los datos de todos los jugadores/equipos.---------------------------------
+ // SPECS para Jasmine
+describe("Pie table ", function () {
+    it("debería devolver las etiquetas HTML para el pie de tabla",
+        function () {
+            expect(Plantilla.pieTable()).toBe("</tbody></table>");
+        });
+});
+
+describe("cuerpoTr ", function () {
+
+    // Preparo los datos
+    let d = {
+       nombre: "el nombre del deportista"
+        ,apellidos: "los apellidos del deportista"
+        ,fecha_nacimiento: { dia: 467, mes: 589, año: 6023 }
+        ,nacionalidad: { pais: "España", comunidad: "Andalucia", provincia: "Jaen"}
+        ,años_de_participacion_mundial: [1995,2004]
+        ,numero_de_participaciones_juegos_olimpicos: 3
+    }
+
+    let p = { data: d }
+
+    // Realizo los expect
+    it("debería devolver una fila de tabla con los datos de un deportista",
+        function () {
+            let msj = Plantilla.cuerpoTr(p)
+            expect(msj.includes(d.nombre)).toBeTrue();
+            expect(msj.includes(d.apellidos)).toBeTrue();
+            expect(msj.includes(d.fecha_nacimiento.dia)).toBeTrue();
+            expect(msj.includes(d.fecha_nacimiento.mes)).toBeTrue();
+            expect(msj.includes(d.fecha_nacimiento.año)).toBeTrue();
+            expect(msj.includes(d.nacionalidad.pais)).toBeTrue();
+            expect(msj.includes(d.nacionalidad.comunidad)).toBeTrue();
+            expect(msj.includes(d.nacionalidad.provincia)).toBeTrue();
+            expect(msj.includes(d.años_de_participacion_mundial)).toBeTrue();
+            expect(msj.includes(d.numero_de_participaciones_juegos_olimpicos)).toBeTrue();
+        });
+});
+//-----------------------------------------------------------------------------------------------------------
+//HU 02: Ver un listado solo con los nombres de todos los jugadores/equipos.---------------------------------
+describe("nombreTr ", function () {
+
+    // Preparo los datos
+    let d = {
+       nombre: "el nombre del deportista"
+    }
+
+    let p = { data: d }
+
+    // Realizo los expect
+    it("debería devolver una fila de tabla con el nombre de un deportista",
+        function () {
+            let msj = Plantilla.nombreTr(p)
+            expect(msj.includes(d.nombre)).toBeTrue();
+        });
+});
+//-----------------------------------------------------------------------------------------------------------

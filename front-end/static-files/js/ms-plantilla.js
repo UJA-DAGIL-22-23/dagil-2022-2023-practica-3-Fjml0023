@@ -154,11 +154,12 @@ Plantilla.cabeceraTable = function () {
 Plantilla.cuerpoTr = function (p) {
     const d = p.data
 
-    return `<tr title="${p.ref['@ref'].id}">
+    //return `<tr title="${p.ref['@ref'].id}">
+    return `<tr>
     <td>${d.nombre}</td>
     <td>${d.apellidos}</td>
     <td>${d.fecha_nacimiento.dia}/${d.fecha_nacimiento.mes}/${d.fecha_nacimiento.año}</td>
-    <td>${d.nacionalidad.provincia} ( ${d.nacionalidad.comunidad}-${d.nacionalidad.pais} )</td>
+    <td>${d.nacionalidad.pais} ( ${d.nacionalidad.comunidad}-${d.nacionalidad.provincia} )</td>
     <td>${d.años_de_participacion_mundial}</td>
     <td>${d.numero_de_participaciones_juegos_olimpicos}</td>
     </tr>
@@ -191,15 +192,16 @@ Plantilla.imprime = function (vector) {
 Plantilla.listar = function () {
    this.recupera(this.imprime);
 }
-//---------------------------------------------------------------------------------------
-//HU 02: Ver un listado solo con los nombres de todos los jugadores/equipos.----------
+//----------------------------------------------------------------------------------------------------------
+//HU 02: Ver un listado solo con los nombres de todos los jugadores/equipos.--------------------------------
 Plantilla.listarnombre = function (){
     this.recupera(this.imprimenombre);
 }
 Plantilla.nombretr = function (p) {
     const d = p.data
 
-    return `<tr title="${p.ref['@ref'].id}">
+    //return `<tr title="${p.ref['@ref'].id}">
+    return `<tr>
     <td>${d.nombre}</td>
     </tr>
     `;
@@ -221,7 +223,7 @@ Plantilla.imprimenombre = function (vector) {
     // Borro toda la info de Article y la sustituyo por la que me interesa
     Frontend.Article.actualizar( "Listado de nombres de deportistas", msj )
 }
-//--------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
 
 
 
