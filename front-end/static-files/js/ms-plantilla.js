@@ -107,7 +107,7 @@ Plantilla.procesarAcercaDe = function () {
     this.descargarRuta("/plantilla/acercade", this.mostrarAcercaDe);
 }
 
-/*MIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*/
+//MIO-------------------------------------------------------------------------------------------------------
 //HU 04: Ver un listado con todos los datos de todos los jugadores/equipos.---------------------------------
 Plantilla.recupera = async function (callBackFn) {
     let response = null
@@ -197,10 +197,9 @@ Plantilla.listar = function () {
 Plantilla.listarnombre = function (){
     this.recupera(this.imprimenombre);
 }
-Plantilla.nombretr = function (p) {
+Plantilla.nombreTr = function (p) {
     const d = p.data
 
-    //return `<tr title="${p.ref['@ref'].id}">
     return `<tr>
     <td>${d.nombre}</td>
     </tr>
@@ -217,7 +216,7 @@ Plantilla.imprimenombre = function (vector) {
     <tbody>
 `;
 
-    vector.forEach(e => msj += Plantilla.nombretr(e))
+    vector.forEach(e => msj += Plantilla.nombreTr(e))
     msj += Plantilla.pieTable();
 
     // Borro toda la info de Article y la sustituyo por la que me interesa

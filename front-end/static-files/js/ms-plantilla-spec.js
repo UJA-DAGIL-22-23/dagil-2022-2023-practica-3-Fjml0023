@@ -142,14 +142,14 @@ Esto afecta a los métodos:
 
  //HU 04: Ver un listado con todos los datos de todos los jugadores/equipos.---------------------------------
  // SPECS para Jasmine
-describe("Pie table ", function () {
+describe("Prueba de pieTable HU 04", function () {
     it("debería devolver las etiquetas HTML para el pie de tabla",
         function () {
             expect(Plantilla.pieTable()).toBe("</tbody></table>");
         });
 });
 
-describe("cuerpoTr ", function () {
+describe("Prueba de cuerpoTr HU 04", function () {
 
     // Preparo los datos
     let d = {
@@ -179,9 +179,51 @@ describe("cuerpoTr ", function () {
             expect(msj.includes(d.numero_de_participaciones_juegos_olimpicos)).toBeTrue();
         });
 });
+
+describe("Prueba de recupera HU 04", function() {
+    beforeEach(function() {
+      spyOn(window, "fetch").and.returnValue(Promise.resolve({
+        status: 200,
+        json: function() {
+          return Promise.resolve({ data: [] });
+        }
+      }));
+    });
+    
+    it("Se deberia llamar a 'fetch' con la URL correcta al ejecutar 'Plantilla.recupera'", async function() {
+      const urlEsperada = Frontend.API_GATEWAY + "/plantilla/getTodas";
+      await Plantilla.recupera(function(data) {});
+      expect(window.fetch).toHaveBeenCalledWith(urlEsperada);
+    });
+  });
+
+  describe("Prueba de cabeceraTable HU 04", function() {
+    it("Se deberia devolver una cadena HTML con la cabecera de la tabla", function() {
+      const resultadoEsperado =`<table class="listado-deportistas">
+        <thead>
+        <th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años_mundial</th><th>Num_Juegos_olimpicos</th>
+        </thead>
+        <tbody>
+    `;
+      const resultadoObtenido = Plantilla.cabeceraTable();
+      expect(resultadoObtenido).toEqual(resultadoEsperado);
+    });
+  });
+  
+
+    describe("Prueba de listar HU 04", function () {
+        it("debería llamar a recupera", function() {
+            // Espía para la funcion recupera
+            spyOn(Plantilla, "recupera");
+            Plantilla.listar();
+        
+            expect(Plantilla.recupera).toHaveBeenCalled();            
+        });
+    });
+          
 //-----------------------------------------------------------------------------------------------------------
 //HU 02: Ver un listado solo con los nombres de todos los jugadores/equipos.---------------------------------
-describe("nombreTr ", function () {
+describe("Prueba nombreTr HU 02", function () {
 
     // Preparo los datos
     let d = {
@@ -197,4 +239,25 @@ describe("nombreTr ", function () {
             expect(msj.includes(d.nombre)).toBeTrue();
         });
 });
+
+describe("Prueba listarnombre HU 02", function() {
+    beforeEach(function() {
+    // Le paso datos a  recupera() para que devuelva una lista de deportistas
+      spyOn(Plantilla, "recupera").and.callFake(function(callback) {
+        callback([
+          {nombre: "Juan"},
+          {nombre: "Pepe"},
+          {nombre: "Domi"}
+        ]);
+      });
+    });
+    
+    it("Se debería llamar a la función Plantilla.imprimenombre al ejecutar Plantilla.listarnombre", function() {
+      spyOn(Plantilla, "imprimenombre");
+      
+      Plantilla.listarnombre();
+      
+      expect(Plantilla.imprimenombre).toHaveBeenCalled();
+    });
+  });
 //-----------------------------------------------------------------------------------------------------------
