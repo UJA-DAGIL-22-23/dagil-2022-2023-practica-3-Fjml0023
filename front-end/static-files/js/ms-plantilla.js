@@ -234,16 +234,17 @@ Plantilla.imprimenombre = function (vector) {
     Frontend.Article.actualizar( "Listado de nombres de deportistas", msj )
 }
 //-----------------------------------------------------------------------------------------------------------
-//HU 03: Ver un listado solo con los nombres de todos los jugadores/equipos ordenados alfabéticamente. 
+//HU 03: Ver un listado solo con los nombres de todos los jugadores/equipos ordenados alfabéticamente.-------
 Plantilla.listarnombreordenado = function (){
     this.recupera(this.imprimenombreOrdenado);
 }
 
 Plantilla.imprimenombreOrdenado = function (vector) {
     // Ordenar vector alfabéticamente por nombre
-    console.log(vector);
 
-    vector.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    vector.sort(function(a, b){
+        return a.data.nombre.localeCompare(b.data.nombre);
+    });
 
     let msj = "";
     msj += `<table class="listado-deportistas">

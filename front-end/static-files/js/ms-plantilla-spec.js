@@ -261,6 +261,40 @@ describe("Prueba listarnombre HU 02", function() {
     });
   });
 //-----------------------------------------------------------------------------------------------------------
+//HU 03: Ver un listado solo con los nombres de todos los jugadores/equipos ordenados alfabéticamente.-------
+describe("Pruebas para listarnombreordenado HU 03", function() {
+  beforeEach(function() {
+    //Preparamos los datos
+    spyOn(Plantilla, "recupera");
+    spyOn(Plantilla, "imprimenombreOrdenado");
+  });
+
+  it("debe llamar a la funcion recupera", function() {
+    Plantilla.listarnombreordenado();
+    expect(Plantilla.recupera).toHaveBeenCalled();
+  });
+});
+
+describe("Pruebas para imprimenombreOrdenado HU 03", function() {
+  it("debe ordenar el vector alfabéticamente por nombre", function() {
+    // Preparamos los datos
+    let vector = [
+      { data: { nombre: "Zoe" } },
+      { data: { nombre: "Ana" } },
+      { data: { nombre: "Carlos" } }
+    ];
+
+    Plantilla.imprimenombreOrdenado(vector);
+
+    // Verifico que el vector fue ordenado correctamente
+    expect(vector[0].data.nombre).toBe("Ana");
+    expect(vector[1].data.nombre).toBe("Carlos");
+    expect(vector[2].data.nombre).toBe("Zoe");
+  });
+});
+
+
+//-----------------------------------------------------------------------------------------------------------
 //HU 06: Ver todos los datos de un determinado jugador/equipo.-----------------------------------------------
 describe("Pruebas para plantillaTablaDeportistas HU 06", function() {
     it("La cabecera de la tabla debería generarse correctamente", function() {
