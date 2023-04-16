@@ -167,15 +167,15 @@ Plantilla.cuerpoTr = function (p) {
 }
 
 /**
- * Pie de la tabla en la que se muestran las personas
+ * Pie de la tabla en la que se muestran los deportistas
  * @returns Cadena con el pie de la tabla
  */
 Plantilla.pieTable = function () {
     return "</tbody></table>";
 }
 /**
- * Función para mostrar en pantalla todos los proyectos que se han recuperado de la BBDD.
- * @param {Vector_de_proyectos} vector Vector con los datos de los proyectos a mostrar
+ * Función para mostrar en pantalla todos los deportistas que se han recuperado de la BBDD.
+ * @param {Vector_de_deportistas} vector Vector con los datos de los deportistas a mostrar
  */
 Plantilla.imprime = function (vector) {
     //console.log( vector ) // Para comprobar lo que hay en vector
@@ -222,7 +222,158 @@ Plantilla.imprimenombre = function (vector) {
     // Borro toda la info de Article y la sustituyo por la que me interesa
     Frontend.Article.actualizar( "Listado de nombres de deportistas", msj )
 }
-//---------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
+//HU 06: Ver todos los datos de un determinado jugador/equipo.-----------------------------------------------
 
+/// Nombre de los campos del formulario para editar un deportista
+Plantilla.form = {
+    NOMBRE: "form-deportista-nombre",
+    APELLIDOS: "form-deportista-apellidos",
+    FECHA_NAC: "form-deportista-f_nac",
+    NACIONALIDAD: "form-deportista-nacionalidad",
+    NUM_JJOO: "form-deportista-n_participacion_jo",
+}
+
+/// Objeto para almacenar los datos del deportista que se está mostrando
+Plantilla.deportistaMostrado = null
+
+// Tags que voy a usar para sustituir los campos
+Plantilla.plantillaTags = {
+    "ID": "### ID ###",
+    "NOMBRE": "### NOMBRE ###",
+    "APELLIDOS": "### APELLIDOS ###",
+    "FECHA_NAC": "### FECHA_NAC ###",
+    "NACIONALIDAD": "### NACIONALIDAD ###",
+    "NUM PARTICIPACION J OLIMPICOS": "### NUM PARTICIPACION J OLIMPICOS ###",
+}
+
+/// Plantilla para poner los datos de un deportista en un tabla dentro de un formulario
+Plantilla.plantillaFormularioDeportista = {}
+
+
+// Cabecera del formulario
+Plantilla.plantillaFormularioDeportista.formulario = `
+<form method='post' action=''>
+    <table width="100%" class="listado-deportistas">
+        <thead>
+        <th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años_mundial</th><th>Num_Juegos_olimpicos</th>
+        </thead>
+        <tbody>
+            <tr title="${Plantilla.plantillaTags.ID}">
+                <td><input type="text" class="form-deportista-elemento" disabled id="form-deportista-id"
+                        value="${Plantilla.plantillaTags.ID}" 
+                        name="id_deportista"/></td>
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-nombre" required value="${Plantilla.plantillaTags.NOMBRE}" 
+                        name="nombre_deportista"/></td>
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
+                        name="apellidos_deportista"/></td>
+                <td><input type="date" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
+                        name="f_nac_deportista"/></td>
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-nacionalidad" required value="${Plantilla.plantillaTags.NACIONALIDAD}" 
+                        name="nacionalidad_deportista"/></td>        
+                <td><input type="number" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-n_participacion_jo" min="0" max="20" size="8" required
+                        value="${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}" 
+                        name="n_participacion_jo"/></td>
+                <td>
+                    <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar</a></div>
+                    <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
+                    <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+`;
+
+/**
+ * Actualiza el cuerpo de la plantilla deseada con los datos del deportistaque se le pasa
+ * @param {String} Plantilla Cadena conteniendo HTML en la que se desea cambiar lso campos de la plantilla por datos
+ * @param {Deportista} Deportista Objeto con los datos del deportista que queremos escribir en el TR
+ * @returns La plantilla del cuerpo de la tabla con los datos actualizados 
+ */           
+Plantilla.sustituyeTags = function (plantilla, deportista) {
+    return plantilla
+        .replace(new RegExp(Plantilla.plantillaTags.ID, 'g'), deportista.ref['@ref'].id)
+        .replace(new RegExp(Plantilla.plantillaTags.NOMBRE, 'g'), deportista.data.nombre)
+        .replace(new RegExp(Plantilla.plantillaTags.APELLIDOS, 'g'), deportista.data.apellidos)
+        .replace(new RegExp(Plantilla.plantillaTags.FECHA_NAC, 'g'), deportista.data.fecha_nacimiento)
+        .replace(new RegExp(Plantilla.plantillaTags.NACIONALIDAD, 'g'), deportista.data.nacionalidad)
+        .replace(new RegExp(Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"], 'g'), deportista.data.numero_de_participaciones_juegos_olimpicos)
+}
+
+/**
+ * Actualiza el formulario con los datos de un deportista que se le pasa
+ * @param {Deportista} Deportista Objeto con los datos del deportista que queremos escribir en el TR
+ * @returns La plantilla del cuerpo de la tabla con los datos actualizados 
+ */
+Plantilla.plantillaFormularioDeportista.actualiza = function (deportista) {
+    return Plantilla.sustituyeTags(this.formulario, deportista)
+}
+
+/**
+ * Imprime los datos de un deportista como una tabla dentro de un formulario usando la plantilla del formulario.
+ * @param {deportista} deportista Objeto con los datos del deportista
+ * @returns Una cadena con la tabla que tiene ya los datos actualizados
+ */
+Plantilla.deportistaComoFormulario = function (deportista) {
+    return Plantilla.plantillaFormularioDeportista.actualiza( deportista );
+}
+
+/**
+ * Función para mostrar en pantalla los detalles de un deportista que se ha recuperado de la BBDD por su id
+ * @param {Deportista} deportista Datos del deportista a mostrar
+ */
+Plantilla.imprimeUnDeportista = function (deportista) {
+    // console.log(deportista) // Para comprobar lo que hay en vector
+    let msj = Plantilla.deportistaComoFormulario(deportista);
+
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Mostrar un deportista", msj)
+
+    // Actualiza el objeto que guarda los datos mostrados
+    Plantilla.almacenaDatos(deportista)
+}
+/**
+ * Almacena los datos del deportista que se está mostrando
+ * @param {Deportista} deportista Datos del deportista a almacenar
+ */
+
+Plantilla.almacenaDatos = function (deportista) {
+    Plantilla.deportistaMostrado = deportista;
+}
+
+/**
+ * Función que recuperar todas los deportistas llamando al MS Plantilla. 
+ * Posteriormente, llama a la función callBackFn para trabajar con los datos recuperados.
+ * @param {String} idDeportista Identificador del deportista a mostrar
+ * @param {función} callBackFn Función a la que se llamará una vez recibidos los datos.
+ */
+Plantilla.recuperaUnDeportista = async function (idDeportista, callBackFn) {
+    try {
+        const url = Frontend.API_GATEWAY + "/plantilla/getPorId/" + idDeportista
+        const response = await fetch(url);
+        if (response) {
+            const deportista = await response.json()
+            callBackFn(deportista)
+        }
+    } catch (error) {
+        alert("Error: No se han podido acceder al API Gateway")
+        console.error(error)
+    }
+}
+
+/**
+ * Función principal para mostrar los datos de un deportista desde el MS y, posteriormente, imprimirla.
+ * @param {String} idDeportista Identificador del deportista a mostrar
+ */
+Plantilla.mostrar = function (idDeportista) {
+    this.recuperaUnDeportista(idDeportista, this.imprimeUnDeportista);
+}
+//-----------------------------------------------------------------------------------------------------------
 
 

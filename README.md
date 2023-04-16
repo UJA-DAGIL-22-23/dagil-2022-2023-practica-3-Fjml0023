@@ -194,3 +194,10 @@ Documentos de la coleccion:
 ### Trello
 Tablero de Trello inicial
 <img src='/Capturas_de_pantalla/Trello/Tablero_de_trello_inicial.JPG'>
+
+### Primer incremento 15/04/2023
+Se han hecho las historias de usuario 01, 02 y 04 con sus respectivas pruebas de TDD.
+<img src='/Capturas_de_pantalla/Trello/Tablero_de_trello_primer_incremento.JPG'>
+
+Funcioalidades del primer incremento:
+<img src='/Capturas_de_pantalla/Funcionalidades_Incremento1.JPG'>

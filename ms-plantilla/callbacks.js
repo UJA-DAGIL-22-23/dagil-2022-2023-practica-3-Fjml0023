@@ -44,7 +44,7 @@ function CORS(res) {
 const CB_MODEL_SELECTS = {
 
 
-/** COSAS MIAS ATENCION A TODO EXPLOTANDO----------------------------------------------*/
+/** COSAS MIAS ----------------------------------------------------------------------------------------------------------*/
 
     /**
      * Prueba de conexión a la BBDD: devuelve todas las personas que haya en la BBDD.
@@ -87,9 +87,27 @@ const CB_MODEL_SELECTS = {
         }
     },
 
-/**COSAS NUEVASSSSSSSSSSSSSSSSSSS------------------------------ */
+/**
+    * Método para obtener una persona de la BBDD a partir de su ID
+    * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
+    * @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
+    */
+getPorId: async (req, res) => {
+    try {
+        // console.log( "getPorId req", req.params.idDeportista ) // req.params contiene todos los parámetros de la llamada
+        let deportista = await client.query(
+            q.Get(q.Ref(q.Collection('Deportistas'), req.params.idDeportista))
+        )
+        // console.log( deportista ) // Para comprobar qué se ha devuelto en deportista
+        CORS(res)
+            .status(200)
+            .json(deportista)
+    } catch (error) {
+        CORS(res).status(500).json({ error: error.description })
+    }
+},
 
-/** FIN DE LA EXPLOSION----------------------------------------------------------------*/
+/** FIN -----------------------------------------------------------------------------------------------------------------------------*/
 
 
     /**

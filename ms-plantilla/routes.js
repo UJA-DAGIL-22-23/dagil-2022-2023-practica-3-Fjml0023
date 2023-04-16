@@ -62,6 +62,17 @@ router.param("idDeportista", (req, res, next, id) => {
     next();
 });
 
+/**
+ * Devuelve los datos de la persona con el id pasado
+ */
+router.get("/getPorId/:idDeportista", async (req, res) => {
+    try {
+        await callbacks.getPorId(req, res)
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 /** FIN DE LA EXPLOSION----------------------------------------------------------------*/
 
 
