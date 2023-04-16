@@ -234,6 +234,33 @@ Plantilla.imprimenombre = function (vector) {
     Frontend.Article.actualizar( "Listado de nombres de deportistas", msj )
 }
 //-----------------------------------------------------------------------------------------------------------
+//HU 03: Ver un listado solo con los nombres de todos los jugadores/equipos ordenados alfabéticamente. 
+Plantilla.listarnombreordenado = function (){
+    this.recupera(this.imprimenombreOrdenado);
+}
+
+Plantilla.imprimenombreOrdenado = function (vector) {
+    // Ordenar vector alfabéticamente por nombre
+    console.log(vector);
+
+    vector.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+    let msj = "";
+    msj += `<table class="listado-deportistas">
+    <thead>
+    <th>Nombre</th>
+    </thead>
+    <tbody>
+`;
+
+    vector.forEach(e => msj += Plantilla.nombreTr(e))
+    msj += Plantilla.pieTable();
+
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar( "Listado de nombres de deportistas alfabeticamente", msj )
+}
+
+//-----------------------------------------------------------------------------------------------------------
 //HU 06: Ver todos los datos de un determinado jugador/equipo.-----------------------------------------------
 
 /// Objeto para almacenar los datos del deportista que se está mostrando
