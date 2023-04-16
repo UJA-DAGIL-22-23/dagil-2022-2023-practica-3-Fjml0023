@@ -107,6 +107,49 @@ getPorId: async (req, res) => {
     }
 },
 
+/**
+    * Método para ocambiar los datos de una persona
+    * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
+    * @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
+    */
+setTodo: async (req, res) => {
+    //console.log("setTodo req.body", req) // req.body contiene todos los parámetros de la llamada
+    try {
+        let valorDevuelto = {}
+        // Hay que comprobar Object.keys(req.body).length para saber si req.body es objeto "normal" o con problemas
+        // Cuando la llamada viene de un formulario, se crea una sola entrada, con toda la info en una sola key y el value está vacío.
+        // Cuando la llamada se hace con un objeto (como se hace desde el server-spec.js), el value No está vacío.
+        let data = (Object.values(req.body)[0] === '') ? JSON.parse(Object.keys(req.body)[0]) : req.body
+        //console.log("SETTODO data es", data)
+        let deportista = await client.query(
+            q.Update(
+                q.Ref(q.Collection(COLLECTION), data.id_deportista),
+                {
+                    data: {
+                        nombre: data.nombre_deportista,
+                        apellidos: data.apellidos_deportista,
+                        fecha_nacimiento: data.f_nac_deportista,
+                        nacionalidad: data.nacionalidad_deportista,
+                        años_de_participacion_mundial: data.años_de_p_mundial_,
+                        numero_de_participaciones_juegos_olimpicos: n_participacion_jo,
+                    },
+                },
+            )
+        )
+            .then((ret) => {
+                valorDevuelto = ret
+                //console.log("Valor devuelto ", valorDevuelto)
+                CORS(res)
+                    .status(200)
+                    .header( 'Content-Type', 'application/json' )
+                    .json(valorDevuelto)
+            })
+
+    } catch (error) {
+        CORS(res).status(500).json({ error: error.description })
+    }
+},
+
 /** FIN -----------------------------------------------------------------------------------------------------------------------------*/
 
 

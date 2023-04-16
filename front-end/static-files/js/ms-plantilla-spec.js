@@ -262,5 +262,133 @@ describe("Prueba listarnombre HU 02", function() {
   });
 //-----------------------------------------------------------------------------------------------------------
 //HU 06: Ver todos los datos de un determinado jugador/equipo.-----------------------------------------------
+describe("Pruebas para plantillaTablaDeportistas HU 06", function() {
+    it("La cabecera de la tabla debería generarse correctamente", function() {
+      let esperado =`<table width="100%" class="listado-deportistas">
+    <thead>
+        <th width="10%">Id</th>
+        <th width="10%">Nombre</th>
+        <th width="10%">Apellidos</th>
+        <th width="20%">Fecha Nacimiento</th>
+        <th width="15%">Nacionalidad</th>
+        <th width="15%">Años de Participacion Mundial</th>
+        <th width="15%">Nº de participacion en Juegos Olimpicos</th>
+        <th>Opciones</th>
 
+    </thead>
+    <tbody>`;
+
+      
+      let obtenido = Plantilla.plantillaTablaDeportistas.cabecera;
+      
+      expect(obtenido).toEqual(esperado);
+    });
+    it("El cuerpo de la tabla debería generarse correctamente", function() {
+        let esperado = `
+    <tr title="${Plantilla.plantillaTags.ID}">
+        <td>${Plantilla.plantillaTags.ID}</td>
+        <td>${Plantilla.plantillaTags.NOMBRE}</td>
+        <td>${Plantilla.plantillaTags.APELLIDOS}</td>
+        <td>${Plantilla.plantillaTags.FECHA_NAC}</td>
+        <td>${Plantilla.plantillaTags.NACIONALIDAD}</td>
+        <td>${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}</td>
+        <td>${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}</td>
+        <td>
+                <div><a href="javascript:Plantilla.mostrar('${Plantilla.plantillaTags.ID}')" class="opcion-secundaria mostrar">Mostrar</a></div>
+        </td>
+    </tr>`;
+        
+        let obtenido = Plantilla.plantillaTablaDeportistas.cuerpo;
+        
+        expect(obtenido).toEqual(esperado);
+      });
+    
+    it("El pie de la tabla debería generarse correctamente", function() {
+        let esperado = `</tbody></table>`;
+        
+        let obtenido = Plantilla.plantillaTablaDeportistas.pie;
+        
+        expect(obtenido).toEqual(esperado);
+      });
+  });
+
+describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function() {
+    it("El formulario debería generar correctamente", function() {
+        let esperado = `
+<form method='post' action=''>
+    <table width="100%" class="listado-deportistas">
+        <thead>
+        <th>ID</th><th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años mundial</th><th>Nº Juegos olimpicos</th><th>Opciones</th>
+        </thead>
+        <tbody>
+            <tr title="${Plantilla.plantillaTags.ID}">
+                <td><input type="text" class="form-deportista-elemento" disabled id="form-deportista-id"
+                        value="${Plantilla.plantillaTags.ID}" 
+                        name="id_deportista"/></td>
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-nombre" required value="${Plantilla.plantillaTags.NOMBRE}" 
+                        name="nombre_deportista"/></td>
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
+                        name="apellidos_deportista"/></td>
+                <td><input type="date" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
+                        name="f_nac_deportista"/></td>
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-nacionalidad" required value="${Plantilla.plantillaTags.NACIONALIDAD}" 
+                        name="nacionalidad_deportista"/></td>        
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportistas-años_de_p_mundial" required value="${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}" 
+                        name="años_de_p_mundial_"/></td>  
+                <td><input type="number" class="form-deportista-elemento editable" disabled
+                        id="form-deportista-n_participacion_jo" min="0" max="20" size="8" required
+                        value="${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}" 
+                        name="n_participacion_jo"/></td>
+                <td>
+                    <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar</a></div>
+                    <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
+                    <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+`;
+      
+      let obtenido = Plantilla.plantillaFormularioDeportista.formulario;
+      
+      expect(obtenido).toEqual(esperado);
+    });
+  });
+
+  describe("Pruebas para plantillaTags HU 06", function() {
+    it("Las etiquetas de la plantilla deberían generarse correctamente", function() {
+      let esperado = {
+        "ID": "### ID ###",
+        "NOMBRE": "### NOMBRE ###",
+        "APELLIDOS": "### APELLIDOS ###",
+        "DIA_NAC": "### DIA_NAC ###",
+        "MES_NAC": "### MES_NAC ###",
+        "AÑO_NAC": "### AÑO_NAC ###",
+        "FECHA_NAC": "### DIA_NAC ###/### MES_NAC ###/### AÑO_NAC ###",
+        "PAIS_N": "### PAIS_N ###",
+        "COMUNIDAD_N": "### COMUNIDAD_N ###",
+        "PROVINCIA_N": "### PROVINCIA_N ###",
+        "NACIONALIDAD": "### PAIS_N ###/### COMUNIDAD_N ###/### PROVINCIA_N ###",
+        "AÑOS_MUNDIAL":  "### AÑOS_MUNDIAL ###",
+        "NUM PARTICIPACION J OLIMPICOS": "### NUM PARTICIPACION J OLIMPICOS ###",
+      };
+      
+      let obtenido = Plantilla.plantillaTags;
+      
+      expect(obtenido).toEqual(esperado);
+    });
+  });
+
+
+  
+  
+  
+  
+  
 //-----------------------------------------------------------------------------------------------------------

@@ -177,7 +177,7 @@ Plantilla.pieTable = function () {
  * Función para mostrar en pantalla todos los deportistas que se han recuperado de la BBDD.
  * @param {Vector_de_deportistas} vector Vector con los datos de los deportistas a mostrar
  */
-Plantilla.imprime = function (vector) {
+/*Plantilla.imprime = function (vector) {
     //console.log( vector ) // Para comprobar lo que hay en vector
     let msj = "";
     msj += Plantilla.cabeceraTable();
@@ -187,6 +187,17 @@ Plantilla.imprime = function (vector) {
     // Borro toda la info de Article y la sustituyo por la que me interesa
     Frontend.Article.actualizar( "Listado de deportistas", msj )
 
+}*/
+Plantilla.imprime = function (vector) {
+    // console.log(vector) // Para comprobar lo que hay en vector
+
+    // Compongo el contenido que se va a mostrar dentro de la tabla
+    let msj = Plantilla.plantillaTablaDeportistas.cabecera
+    vector.forEach(e => msj += Plantilla.plantillaTablaDeportistas.actualiza(e))
+    msj += Plantilla.plantillaTablaDeportistas.pie
+
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Listado de deportistas", msj)
 }
 
 Plantilla.listar = function () {
@@ -225,15 +236,6 @@ Plantilla.imprimenombre = function (vector) {
 //-----------------------------------------------------------------------------------------------------------
 //HU 06: Ver todos los datos de un determinado jugador/equipo.-----------------------------------------------
 
-/// Nombre de los campos del formulario para editar un deportista
-Plantilla.form = {
-    NOMBRE: "form-deportista-nombre",
-    APELLIDOS: "form-deportista-apellidos",
-    FECHA_NAC: "form-deportista-f_nac",
-    NACIONALIDAD: "form-deportista-nacionalidad",
-    NUM_JJOO: "form-deportista-n_participacion_jo",
-}
-
 /// Objeto para almacenar los datos del deportista que se está mostrando
 Plantilla.deportistaMostrado = null
 
@@ -242,8 +244,15 @@ Plantilla.plantillaTags = {
     "ID": "### ID ###",
     "NOMBRE": "### NOMBRE ###",
     "APELLIDOS": "### APELLIDOS ###",
-    "FECHA_NAC": "### FECHA_NAC ###",
-    "NACIONALIDAD": "### NACIONALIDAD ###",
+    "DIA_NAC": "### DIA_NAC ###",
+    "MES_NAC": "### MES_NAC ###",
+    "AÑO_NAC": "### AÑO_NAC ###",
+    "FECHA_NAC": "### DIA_NAC ###/### MES_NAC ###/### AÑO_NAC ###",
+    "PAIS_N": "### PAIS_N ###",
+    "COMUNIDAD_N": "### COMUNIDAD_N ###",
+    "PROVINCIA_N": "### PROVINCIA_N ###",
+    "NACIONALIDAD": "### PAIS_N ###/### COMUNIDAD_N ###/### PROVINCIA_N ###",
+    "AÑOS_MUNDIAL":  "### AÑOS_MUNDIAL ###",
     "NUM PARTICIPACION J OLIMPICOS": "### NUM PARTICIPACION J OLIMPICOS ###",
 }
 
@@ -256,7 +265,7 @@ Plantilla.plantillaFormularioDeportista.formulario = `
 <form method='post' action=''>
     <table width="100%" class="listado-deportistas">
         <thead>
-        <th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años_mundial</th><th>Num_Juegos_olimpicos</th>
+        <th>ID</th><th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años mundial</th><th>Nº Juegos olimpicos</th><th>Opciones</th>
         </thead>
         <tbody>
             <tr title="${Plantilla.plantillaTags.ID}">
@@ -275,6 +284,9 @@ Plantilla.plantillaFormularioDeportista.formulario = `
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-nacionalidad" required value="${Plantilla.plantillaTags.NACIONALIDAD}" 
                         name="nacionalidad_deportista"/></td>        
+                <td><input type="text" class="form-deportista-elemento editable" disabled
+                        id="form-deportistas-años_de_p_mundial" required value="${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}" 
+                        name="años_de_p_mundial_"/></td>  
                 <td><input type="number" class="form-deportista-elemento editable" disabled
                         id="form-deportista-n_participacion_jo" min="0" max="20" size="8" required
                         value="${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}" 
@@ -290,6 +302,44 @@ Plantilla.plantillaFormularioDeportista.formulario = `
 </form>
 `;
 
+/// Plantilla para poner los datos de varios deportistas dentro de una tabla
+Plantilla.plantillaTablaDeportistas = {}
+
+
+// Cabecera de la tabla
+Plantilla.plantillaTablaDeportistas.cabecera =`<table width="100%" class="listado-deportistas">
+    <thead>
+        <th width="10%">Id</th>
+        <th width="10%">Nombre</th>
+        <th width="10%">Apellidos</th>
+        <th width="20%">Fecha Nacimiento</th>
+        <th width="15%">Nacionalidad</th>
+        <th width="15%">Años de Participacion Mundial</th>
+        <th width="15%">Nº de participacion en Juegos Olimpicos</th>
+        <th>Opciones</th>
+
+    </thead>
+    <tbody>`;
+
+// Elemento TR que muestra los datos de una deportista
+Plantilla.plantillaTablaDeportistas.cuerpo = `
+    <tr title="${Plantilla.plantillaTags.ID}">
+        <td>${Plantilla.plantillaTags.ID}</td>
+        <td>${Plantilla.plantillaTags.NOMBRE}</td>
+        <td>${Plantilla.plantillaTags.APELLIDOS}</td>
+        <td>${Plantilla.plantillaTags.FECHA_NAC}</td>
+        <td>${Plantilla.plantillaTags.NACIONALIDAD}</td>
+        <td>${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}</td>
+        <td>${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}</td>
+        <td>
+                <div><a href="javascript:Plantilla.mostrar('${Plantilla.plantillaTags.ID}')" class="opcion-secundaria mostrar">Mostrar</a></div>
+        </td>
+    </tr>`;
+
+// Pie de la tabla
+Plantilla.plantillaTablaDeportistas.pie = `</tbody></table>`;
+
+
 /**
  * Actualiza el cuerpo de la plantilla deseada con los datos del deportistaque se le pasa
  * @param {String} Plantilla Cadena conteniendo HTML en la que se desea cambiar lso campos de la plantilla por datos
@@ -303,7 +353,17 @@ Plantilla.sustituyeTags = function (plantilla, deportista) {
         .replace(new RegExp(Plantilla.plantillaTags.APELLIDOS, 'g'), deportista.data.apellidos)
         .replace(new RegExp(Plantilla.plantillaTags.FECHA_NAC, 'g'), deportista.data.fecha_nacimiento)
         .replace(new RegExp(Plantilla.plantillaTags.NACIONALIDAD, 'g'), deportista.data.nacionalidad)
+        .replace(new RegExp(Plantilla.plantillaTags["AÑOS_MUNDIAL"], 'g'), deportista.data.años_de_participacion_mundial)
         .replace(new RegExp(Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"], 'g'), deportista.data.numero_de_participaciones_juegos_olimpicos)
+}
+
+/**
+ * Actualiza el cuerpo de la tabla con los datos del deportista que se le pasa
+ * @param {Deportista} Deportista Objeto con los datos del deportista que queremos escribir en el TR
+ * @returns La plantilla del cuerpo de la tabla con los datos actualizados 
+ */
+Plantilla.plantillaTablaDeportistas.actualiza = function (deportista) {
+    return Plantilla.sustituyeTags(this.cuerpo, deportista)
 }
 
 /**
@@ -338,14 +398,6 @@ Plantilla.imprimeUnDeportista = function (deportista) {
     // Actualiza el objeto que guarda los datos mostrados
     Plantilla.almacenaDatos(deportista)
 }
-/**
- * Almacena los datos del deportista que se está mostrando
- * @param {Deportista} deportista Datos del deportista a almacenar
- */
-
-Plantilla.almacenaDatos = function (deportista) {
-    Plantilla.deportistaMostrado = deportista;
-}
 
 /**
  * Función que recuperar todas los deportistas llamando al MS Plantilla. 
@@ -374,6 +426,188 @@ Plantilla.recuperaUnDeportista = async function (idDeportista, callBackFn) {
 Plantilla.mostrar = function (idDeportista) {
     this.recuperaUnDeportista(idDeportista, this.imprimeUnDeportista);
 }
-//-----------------------------------------------------------------------------------------------------------
 
+/**
+ * Imprime los datos de un deportista como una tabla usando la plantilla del formulario.
+ * @param {persona} Persona Objeto con los datos de la persona
+ * @returns Una cadena con la tabla que tiene ya los datos actualizados
+ */
+Plantilla.deportistaComoTabla = function (deportista) {
+    return Plantilla.plantillaTablaDeportistas.cabecera
+        + Plantilla.plantillaTablaDeportistas.actualiza(deportista)
+        + Plantilla.plantillaTablaDeportistas.pie;
+}
+
+//-----------------------------------------------------------------------------------------------------------
+//HU 12: Modificar el nombre de un jugador/equipo------------------------------------------------------------
+
+/// Nombre de los campos del formulario para editar un deportista
+
+/**
+ * Almacena los datos del deportista que se está mostrando
+ * @param {Deportista} deportista Datos del deportista a almacenar
+ */
+
+Plantilla.almacenaDatos = function (deportista) {
+    Plantilla.deportistaMostrado = deportista;
+}
+
+/**
+ * Recupera los valores almacenados de la persona que se estaba mostrando
+ * @return Datos de la persona a almacenada
+ */
+Plantilla.recuperaDatosAlmacenados = function () {
+    return this.deportistaMostrado;
+}
+
+Plantilla.form = {
+    NOMBRE: "form-deportista-nombre",
+    APELLIDOS: "form-deportista-apellidos",
+    FECHA_NAC: "form-deportista-f_nac",
+    NACIONALIDAD: "form-deportista-nacionalidad",
+    AÑOS_DE_P_MUNDIAL: "form-deportistas-años_de_p_mundial",
+    NUM_JJOO: "form-deportista-n_participacion_jo",
+}
+
+/**
+ * Establece disable = habilitando en los campos editables
+ * @param {boolean} Deshabilitando Indica si queremos deshabilitar o habilitar los campos
+ * @returns El propio objeto Deportistas, para concatenar llamadas
+ */
+Plantilla.habilitarDeshabilitarCamposEditables = function (deshabilitando) {
+    deshabilitando = (typeof deshabilitando === "undefined" || deshabilitando === null) ? true : deshabilitando
+    for (let campo in Plantilla.form) {
+        document.getElementById(Plantilla.form[campo]).disabled = deshabilitando
+    }
+    return this
+}
+
+/**
+ * Establece disable = true en los campos editables
+ * @returns El propio objeto Deportistas, para concatenar llamadas
+ */
+Plantilla.deshabilitarCamposEditables = function () {
+    Plantilla.habilitarDeshabilitarCamposEditables(true)
+    return this
+}
+
+/**
+ * Establece disable = false en los campos editables
+ * @returns El propio objeto Deportistas, para concatenar llamadas
+ */
+Plantilla.habilitarCamposEditables = function () {
+    Plantilla.habilitarDeshabilitarCamposEditables(false)
+    return this
+}
+
+/**
+ * ????Muestra las opciones que tiene el usuario cuando selecciona Editar
+ * @returns El propio objeto Deportistas, para concatenar llamadas
+ */
+Plantilla.opcionesMostrarOcultar = function (classname, mostrando) {
+    let opciones = document.getElementsByClassName(classname)
+    let claseQuitar = mostrando ? Frontend.CLASS_OCULTAR : Frontend.CLASS_MOSTRAR
+    let claseAniadir = !mostrando ? Frontend.CLASS_OCULTAR : Frontend.CLASS_MOSTRAR
+
+    for (let i = 0; i < opciones.length; ++i) {
+        Frontend.quitarClase(opciones[i], claseQuitar)
+            .aniadirClase(opciones[i], claseAniadir)
+    }
+    return this
+}
+
+/**
+ * Oculta todas las opciones secundarias
+ * @returns El propio objeto para encadenar llamadas
+ */
+Plantilla.ocultarOpcionesSecundarias = function () {
+    this.opcionesMostrarOcultar("opcion-secundaria", false)
+    return this
+}
+
+/**
+ * Muestra todas las opciones secundarias
+ * @returns El propio objeto para encadenar llamadas
+ */
+Plantilla.mostrarOpcionesSecundarias = function () {
+    this.opcionesMostrarOcultar("opcion-secundaria", true)
+    return this
+}
+
+/**
+ * Muestra las opciones que tiene el usuario cuando selecciona Editar
+ * @returns El propio objeto Deportistas, para concatenar llamadas
+ */
+Plantilla.mostrarOcionesTerciariasEditar = function () {
+    this.opcionesMostrarOcultar("opcion-terciaria editar", true)
+    return this
+}
+
+/**
+ * Oculta las opciones que tiene el usuario cuando selecciona Editar
+ * @returns El propio objeto Deportistas, para concatenar llamadas
+ */
+Plantilla.ocultarOcionesTerciariasEditar = function () {
+    this.opcionesMostrarOcultar("opcion-terciaria editar", false)
+    return this
+}
+
+/**
+ * Función que permite modificar los datos de una deportista
+ */
+Plantilla.editar = function () {
+    this.ocultarOpcionesSecundarias()
+    this.mostrarOcionesTerciariasEditar()
+    this.habilitarCamposEditables()
+}
+
+/**
+ * Función que permite cancelar la acción sobre los datos de una deportista
+ */
+Plantilla.cancelar = function () {
+    this.imprimeUnDeportista(this.recuperaDatosAlmacenados())
+    this.deshabilitarCamposEditables()
+    this.ocultarOcionesTerciariasEditar()
+    this.mostrarOpcionesSecundarias()
+}
+
+Plantilla.guardar = async function () {
+    try {
+        let url = Frontend.API_GATEWAY + "/plantilla/setTodo/"
+        let id_deportista = document.getElementById("form-deportista-id").value
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'no-cors', // no-cors, cors, *same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'omit', // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify({
+                "id_deportista": id_deportista,
+                "nombre_deportista": document.getElementById("form-deportista-nombre").value,
+                "apellidos_deportista": document.getElementById("form-deportista-apellidos").value,
+                "f_nac_deportista": document.getElementById("form-deportista-f_nac").value,
+                "nacionalidad_deportista": document.getElementById("form-deportista-nacionalidad").value,
+                "años_de_p_mundial_": document.getElementById("form-deportistas-años_de_p_mundial").value,
+                "n_participacion_jo": document.getElementById("form-deportista-n_participacion_jo").value
+            }), // body data type must match "Content-Type" header
+        })
+            
+        /*
+        Error: No procesa bien la respuesta devuelta
+        if (response) {
+            const deportista = await response.json()
+            alert(deportista)
+        }
+        */
+        Plantilla.mostrar(id_deportista)
+    } catch (error) {
+        alert("Error: No se han podido acceder al API Gateway " + error)
+        //console.error(error)
+    }
+}
+//-----------------------------------------------------------------------------------------------------------
 
