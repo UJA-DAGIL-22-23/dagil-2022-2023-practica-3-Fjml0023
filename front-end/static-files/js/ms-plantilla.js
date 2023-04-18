@@ -147,7 +147,7 @@ Plantilla.cabeceraTable = function () {
 }
 
 /**
- * Muestra la información de cada proyecto en un elemento TR con sus correspondientes TD
+ * Muestra la información de cada deportista en un elemento TR con sus correspondientes TD
  * @param {deportista} p Datos del deportista a mostrar
  * @returns Cadena conteniendo todo el elemento TR que muestra el proyecto.
  */
@@ -272,14 +272,8 @@ Plantilla.plantillaTags = {
     "ID": "### ID ###",
     "NOMBRE": "### NOMBRE ###",
     "APELLIDOS": "### APELLIDOS ###",
-    "DIA_NAC": "### DIA_NAC ###",
-    "MES_NAC": "### MES_NAC ###",
-    "AÑO_NAC": "### AÑO_NAC ###",
-    "FECHA_NAC": "### DIA_NAC ###/### MES_NAC ###/### AÑO_NAC ###",
-    "PAIS_N": "### PAIS_N ###",
-    "COMUNIDAD_N": "### COMUNIDAD_N ###",
-    "PROVINCIA_N": "### PROVINCIA_N ###",
-    "NACIONALIDAD": "### PAIS_N ###/### COMUNIDAD_N ###/### PROVINCIA_N ###",
+    "FECHA_NAC": "### FECHA_NAC ###",
+    "NACIONALIDAD": "### NACIONALIDAD ###",
     "AÑOS_MUNDIAL":  "### AÑOS_MUNDIAL ###",
     "NUM PARTICIPACION J OLIMPICOS": "### NUM PARTICIPACION J OLIMPICOS ###",
 }
@@ -306,7 +300,7 @@ Plantilla.plantillaFormularioDeportista.formulario = `
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
                         name="apellidos_deportista"/></td>
-                <td><input type="date" class="form-deportista-elemento editable" disabled
+                <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
                         name="f_nac_deportista"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
@@ -379,8 +373,8 @@ Plantilla.sustituyeTags = function (plantilla, deportista) {
         .replace(new RegExp(Plantilla.plantillaTags.ID, 'g'), deportista.ref['@ref'].id)
         .replace(new RegExp(Plantilla.plantillaTags.NOMBRE, 'g'), deportista.data.nombre)
         .replace(new RegExp(Plantilla.plantillaTags.APELLIDOS, 'g'), deportista.data.apellidos)
-        .replace(new RegExp(Plantilla.plantillaTags.FECHA_NAC, 'g'), deportista.data.fecha_nacimiento)
-        .replace(new RegExp(Plantilla.plantillaTags.NACIONALIDAD, 'g'), deportista.data.nacionalidad)
+        .replace(new RegExp(Plantilla.plantillaTags.FECHA_NAC, 'g'), deportista.data.fecha_nacimiento.dia + "/" + deportista.data.fecha_nacimiento.mes + "/" + deportista.data.fecha_nacimiento.año  )
+        .replace(new RegExp(Plantilla.plantillaTags.NACIONALIDAD, 'g'), deportista.data.nacionalidad.pais + "/" + deportista.data.nacionalidad.comunidad + "/" + deportista.data.nacionalidad.provincia)
         .replace(new RegExp(Plantilla.plantillaTags["AÑOS_MUNDIAL"], 'g'), deportista.data.años_de_participacion_mundial)
         .replace(new RegExp(Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"], 'g'), deportista.data.numero_de_participaciones_juegos_olimpicos)
 }

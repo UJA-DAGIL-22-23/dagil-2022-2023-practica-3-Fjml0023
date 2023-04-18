@@ -365,7 +365,7 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
                         name="apellidos_deportista"/></td>
-                <td><input type="date" class="form-deportista-elemento editable" disabled
+                <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
                         name="f_nac_deportista"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
@@ -401,14 +401,8 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
         "ID": "### ID ###",
         "NOMBRE": "### NOMBRE ###",
         "APELLIDOS": "### APELLIDOS ###",
-        "DIA_NAC": "### DIA_NAC ###",
-        "MES_NAC": "### MES_NAC ###",
-        "AÑO_NAC": "### AÑO_NAC ###",
-        "FECHA_NAC": "### DIA_NAC ###/### MES_NAC ###/### AÑO_NAC ###",
-        "PAIS_N": "### PAIS_N ###",
-        "COMUNIDAD_N": "### COMUNIDAD_N ###",
-        "PROVINCIA_N": "### PROVINCIA_N ###",
-        "NACIONALIDAD": "### PAIS_N ###/### COMUNIDAD_N ###/### PROVINCIA_N ###",
+        "FECHA_NAC": "### FECHA_NAC ###",
+        "NACIONALIDAD": "### NACIONALIDAD ###",
         "AÑOS_MUNDIAL":  "### AÑOS_MUNDIAL ###",
         "NUM PARTICIPACION J OLIMPICOS": "### NUM PARTICIPACION J OLIMPICOS ###",
       };
