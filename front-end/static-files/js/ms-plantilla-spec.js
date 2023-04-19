@@ -379,12 +379,13 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
                         value="${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}" 
                         name="numero_de_participaciones_juegos_olimpicos"/></td>
                 <td>
-                    <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar</a></div>
+                    <div><a href="javascript:Plantilla.editarNombre()" class="opcion-secundaria mostrar">Editar nombre</a></div>
+                    <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar varios campos</a></div>
                     <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
                     <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
                     <div>
-                    <button id="retroceder-btn">Retroceder</button>
-                    <button id="avanzar-btn">Avanzar</button>
+                    <button id="botonAnterior">Retroceder</button>
+                    <button id="botonSiguiente">Avanzar</button>
                     </div>
                 </td>
             </tr>

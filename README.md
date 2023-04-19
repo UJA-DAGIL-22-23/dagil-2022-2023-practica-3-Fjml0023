@@ -29,11 +29,7 @@ Documentos de la coleccion:
     mes: "07",
     año: "1994"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Andalucia",
-    provincia: "Jaen"
-  },
+  nacionalidad: "Española",
   años_de_participacion_mundial: [2008, 2012, 2016],
   numero_de_participaciones_juegos_olimpicos: 3
 }
@@ -46,11 +42,7 @@ Documentos de la coleccion:
     mes: "05",
     año: "1999"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Andalucia",
-    provincia: "Cordoba"
-  },
+  nacionalidad: "Española",
   años_de_participacion_mundial: [2016, 2020],
   numero_de_participaciones_juegos_olimpicos: 2
 }
@@ -63,11 +55,7 @@ Documentos de la coleccion:
     mes: "12",
     año: "1983"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Barcelona",
-    provincia: "Tarragona"
-  },
+  nacionalidad: "Japonesa",
   años_de_participacion_mundial: [2004, 2012, 2016, 2020],
   numero_de_participaciones_juegos_olimpicos: 4
 }
@@ -80,11 +68,7 @@ Documentos de la coleccion:
     mes: "08",
     año: "1984"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Valencia",
-    provincia: "Alicante"
-  },
+  nacionalidad: "Francesa",
   años_de_participacion_mundial: [2000, 2008, 2016],
   numero_de_participaciones_juegos_olimpicos: 3
 }
@@ -97,11 +81,7 @@ Documentos de la coleccion:
     mes: "02",
     año: "1989"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Valencia",
-    provincia: "Castellon"
-  },
+  nacionalidad: "Italiana",
   años_de_participacion_mundial: [1996, 2008, 2020],
   numero_de_participaciones_juegos_olimpicos: 6
 }
@@ -114,11 +94,7 @@ Documentos de la coleccion:
     mes: "06",
     año: "1998"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Madrid",
-    provincia: "Madrid"
-  },
+  nacionalidad: "Portuguesa",
   años_de_participacion_mundial: [2016, 2020],
   numero_de_participaciones_juegos_olimpicos: 2
 }
@@ -131,11 +107,7 @@ Documentos de la coleccion:
     mes: "03",
     año: "1983"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Euskadi",
-    provincia: "Gipuzkoa"
-  },
+  nacionalidad: "Española",
   años_de_participacion_mundial: [1992, 2004, 2008],
   numero_de_participaciones_juegos_olimpicos: 5
 }
@@ -148,11 +120,7 @@ Documentos de la coleccion:
     mes: "03",
     año: "1990"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Euskadi",
-    provincia: "Navarra"
-  },
+  nacionalidad: "Inglesa",
   años_de_participacion_mundial: [2004, 2008, 2016],
   numero_de_participaciones_juegos_olimpicos: 1
 }
@@ -165,11 +133,7 @@ Documentos de la coleccion:
     mes: "04",
     año: "1997"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Andalucia",
-    provincia: "Jaen"
-  },
+  nacionalidad: "Española",
   años_de_participacion_mundial: [2016, 2020],
   numero_de_participaciones_juegos_olimpicos: 3
 }
@@ -182,11 +146,7 @@ Documentos de la coleccion:
     mes: "11",
     año: "1980"
   },
-  nacionalidad: {
-    pais: "España",
-    comunidad: "Andalucia",
-    provincia: "Granada"
-  },
+  nacionalidad: "Española",
   años_de_participacion_mundial: [2000, 2012, 2016],
   numero_de_participaciones_juegos_olimpicos: 6
 }
@@ -201,3 +161,14 @@ Se han hecho las historias de usuario 01, 02 y 04 con sus respectivas pruebas de
 
 Funcioalidades del primer incremento:
 <img src='/Capturas_de_pantalla/Funcionalidades_Incremento1.JPG'>
+<img src='/Capturas_de_pantalla/Funcionalidades_Incremento1.1.JPG'>
+
+### Primer incremento 21/04/2023
+Se han hecho las historias de usuario 03, 06 , 12 y 13 con sus respectivas pruebas de TDD.
+<img src='/Capturas_de_pantalla/Trello/Tablero_de_trello_segundo_incremento.JPG'>
+
+Funcioalidades del segundo incremento:
+<img src='/Capturas_de_pantalla/Funcionalidades_Incremento2.JPG'>
+<img src='/Capturas_de_pantalla/Funcionalidades_Incremento2.1.JPG'>
+<img src='/Capturas_de_pantalla/Funcionalidades_Incremento2.2.JPG'>
+<img src='/Capturas_de_pantalla/Funcionalidades_Incremento2.3.JPG'>
