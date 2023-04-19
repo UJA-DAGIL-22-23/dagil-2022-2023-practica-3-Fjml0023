@@ -39,35 +39,35 @@ describe("Plantilla.mostrarHome: ", function () {
     it("muestra datos nulos cuando le pasamos un valor nulo",
         function () {
             Plantilla.mostrarHome()
-            expect(elementoTitulo.innerHTML).toBe(TITULO_HOME)
-            expect(elementoContenido.innerHTML).toBe(Plantilla.datosDescargadosNulos.mensaje)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_HOME)
+            expect(elementoContenido.innerHTML).toBe("\n"+Plantilla.datosDescargadosNulos.mensaje)
         })
 
     it("muestra datos nulos cuando le pasamos un valor que no es un objeto",
         function () {
             Plantilla.mostrarHome(23)
-            expect(elementoTitulo.innerHTML).toBe(TITULO_HOME)
-            expect(elementoContenido.innerHTML).toBe(Plantilla.datosDescargadosNulos.mensaje)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_HOME)
+            expect(elementoContenido.innerHTML).toBe("\n"+Plantilla.datosDescargadosNulos.mensaje)
         })
 
     it("muestra datos nulos cuando le pasamos un objeto que no tiene campo mensaje",
         function () {
             // Objeto vacío
             Plantilla.mostrarHome({})
-            expect(elementoTitulo.innerHTML).toBe(TITULO_HOME)
-            expect(elementoContenido.innerHTML).toBe(Plantilla.datosDescargadosNulos.mensaje)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_HOME)
+            expect(elementoContenido.innerHTML).toBe("\n"+Plantilla.datosDescargadosNulos.mensaje)
 
             // Objeto sin campo mensaje
             Plantilla.mostrarHome({ foo: "bar" })
-            expect(elementoTitulo.innerHTML).toBe(TITULO_HOME)
-            expect(elementoContenido.innerHTML).toBe(Plantilla.datosDescargadosNulos.mensaje)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_HOME)
+            expect(elementoContenido.innerHTML).toBe("\n"+Plantilla.datosDescargadosNulos.mensaje)
         })
 
     it("muestra correctamente el título y el mensaje",
         function () {
             Plantilla.mostrarHome(datosDescargadosPrueba)
-            expect(elementoTitulo.innerHTML).toBe(TITULO_HOME)
-            expect(elementoContenido.innerHTML).toBe(datosDescargadosPrueba.mensaje)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_HOME)
+            expect(elementoContenido.innerHTML).toBe("\n"+datosDescargadosPrueba.mensaje)
         })
 })
 
@@ -76,14 +76,14 @@ describe("Plantilla.mostrarAcercaDe: ", function () {
     it("muestra datos nulos cuando le pasamos un valor nulo",
         function () {
             Plantilla.mostrarAcercaDe()
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
             expect(elementoContenido.innerHTML.search(Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeTrue()
         })
 
     it("muestra datos nulos cuando le pasamos un valor que no es un objeto",
         function () {
             Plantilla.mostrarAcercaDe(23)
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
             expect(elementoContenido.innerHTML.search(Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeTrue()
         })
 
@@ -91,30 +91,30 @@ describe("Plantilla.mostrarAcercaDe: ", function () {
         function () {
             // Objeto vacío
             Plantilla.mostrarAcercaDe({})
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
             expect(elementoContenido.innerHTML.search(Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeTrue()
 
             // Objeto sin campo mensaje
             Plantilla.mostrarAcercaDe({ autor: "un autor", email: "un email", fecha: "una fecha" })
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
             expect(elementoContenido.innerHTML.search(Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeTrue()
             // Objeto sin campo autor
             Plantilla.mostrarAcercaDe({ mensaje: "un mensaje", email: "un email", fecha: "una fecha" })
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
             expect(elementoContenido.innerHTML.search(Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeTrue()
             // Objeto sin campo email
             Plantilla.mostrarAcercaDe({ mensaje: "un mensaje", autor: "un autor", fecha: "una fecha" })
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
-            expect(elementoContenido.innerHTML.search(Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeTrue()
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
+            expect(elementoContenido.innerHTML.search("\n"+Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeFalse()
             // Objeto sin campo fecha
             Plantilla.mostrarAcercaDe({ mensaje: "un mensaje", autor: "un autor", email: "un email" })
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
             expect(elementoContenido.innerHTML.search(Plantilla.datosDescargadosNulos.mensaje) >= 0).toBeTrue()
         })
     it("muestra correctamente el título y el mensaje conteniendo el autor, el email y la fecha",
         function () {
             Plantilla.mostrarAcercaDe(datosDescargadosPrueba)
-            expect(elementoTitulo.innerHTML).toBe(TITULO_ACERCA_DE)
+            expect(elementoTitulo.innerHTML).toBe("\n"+TITULO_ACERCA_DE)
 
             // Comprobamos que al buscar el autor, el email y la fecha de prueba los encuentra dentro del contenido del article
             expect(elementoContenido.innerHTML.search(datosDescargadosPrueba.autor) >= 0).toBeTrue()
@@ -361,27 +361,31 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
                         name="id_deportista"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-nombre" required value="${Plantilla.plantillaTags.NOMBRE}" 
-                        name="nombre_deportista"/></td>
+                        name="nombre"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
-                        name="apellidos_deportista"/></td>
+                        name="apellidos"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
-                        name="f_nac_deportista"/></td>
+                        name="fecha_nacimiento"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-nacionalidad" required value="${Plantilla.plantillaTags.NACIONALIDAD}" 
-                        name="nacionalidad_deportista"/></td>        
+                        name="nacionalidad"/></td>        
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportistas-años_de_p_mundial" required value="${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}" 
-                        name="años_de_p_mundial_"/></td>  
+                        name="años_de_participacion_mundial"/></td>  
                 <td><input type="number" class="form-deportista-elemento editable" disabled
-                        id="form-deportista-n_participacion_jo" min="0" max="20" size="8" required
+                        id="form-deportista-numero_de_participaciones_juegos_olimpicos" min="0" max="20" size="8" required
                         value="${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}" 
-                        name="n_participacion_jo"/></td>
+                        name="numero_de_participaciones_juegos_olimpicos"/></td>
                 <td>
                     <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar</a></div>
                     <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
                     <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
+                    <div>
+                    <button id="retroceder-btn">Retroceder</button>
+                    <button id="avanzar-btn">Avanzar</button>
+                    </div>
                 </td>
             </tr>
         </tbody>

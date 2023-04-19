@@ -201,9 +201,9 @@ Plantilla.imprime = function (vector) {
 }
 
 Plantilla.listar = function () {
-   this.recupera(this.imprime);
-}
-//----------------------------------------------------------------------------------------------------------
+    this.recupera(this.imprime);
+ }
+ //----------------------------------------------------------------------------------------------------------
 //HU 02: Ver un listado solo con los nombres de todos los jugadores/equipos.--------------------------------
 Plantilla.listarnombre = function (){
     this.recupera(this.imprimenombre);
@@ -296,30 +296,30 @@ Plantilla.plantillaFormularioDeportista.formulario = `
                         name="id_deportista"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-nombre" required value="${Plantilla.plantillaTags.NOMBRE}" 
-                        name="nombre_deportista"/></td>
+                        name="nombre"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
-                        name="apellidos_deportista"/></td>
+                        name="apellidos"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
-                        name="f_nac_deportista"/></td>
+                        name="fecha_nacimiento"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-nacionalidad" required value="${Plantilla.plantillaTags.NACIONALIDAD}" 
-                        name="nacionalidad_deportista"/></td>        
+                        name="nacionalidad"/></td>        
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportistas-años_de_p_mundial" required value="${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}" 
-                        name="años_de_p_mundial_"/></td>  
+                        name="años_de_participacion_mundial"/></td>  
                 <td><input type="number" class="form-deportista-elemento editable" disabled
-                        id="form-deportista-n_participacion_jo" min="0" max="20" size="8" required
+                        id="form-deportista-numero_de_participaciones_juegos_olimpicos" min="0" max="20" size="8" required
                         value="${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}" 
-                        name="n_participacion_jo"/></td>
+                        name="numero_de_participaciones_juegos_olimpicos"/></td>
                 <td>
                     <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar</a></div>
                     <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
                     <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
                     <div>
-                    <button id="retroceder-btn">Retroceder</button>
-                    <button id="avanzar-btn">Avanzar</button>
+                    <button id="botonAnterior">Retroceder</button>
+                    <button id="botonSiguiente">Avanzar</button>
                     </div>
                 </td>
             </tr>
@@ -378,7 +378,7 @@ Plantilla.sustituyeTags = function (plantilla, deportista) {
         .replace(new RegExp(Plantilla.plantillaTags.NOMBRE, 'g'), deportista.data.nombre)
         .replace(new RegExp(Plantilla.plantillaTags.APELLIDOS, 'g'), deportista.data.apellidos)
         .replace(new RegExp(Plantilla.plantillaTags.FECHA_NAC, 'g'), deportista.data.fecha_nacimiento.dia + "/" + deportista.data.fecha_nacimiento.mes + "/" + deportista.data.fecha_nacimiento.año)
-        .replace(new RegExp(Plantilla.plantillaTags.NACIONALIDAD, 'g'), deportista.data.nacionalidad.pais + "/" + deportista.data.nacionalidad.comunidad + "/" + deportista.data.nacionalidad.provincia)
+        .replace(new RegExp(Plantilla.plantillaTags.NACIONALIDAD, 'g'), deportista.data.nacionalidad)
         .replace(new RegExp(Plantilla.plantillaTags["AÑOS_MUNDIAL"], 'g'), deportista.data.años_de_participacion_mundial)
         .replace(new RegExp(Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"], 'g'), deportista.data.numero_de_participaciones_juegos_olimpicos)
 }
@@ -465,7 +465,7 @@ Plantilla.deportistaComoTabla = function (deportista) {
 }
 
 //-----------------------------------------------------------------------------------------------------------
-//HU 12: Modificar el nombre de un jugador/equipo------------------------------------------------------------
+//HU 13:Modificar varios de los datos a la vez de un jugador/equipo. Se deberán poder modificar al menos 3 campos además del nombre-------
 
 /// Nombre de los campos del formulario para editar un deportista
 
@@ -489,10 +489,10 @@ Plantilla.recuperaDatosAlmacenados = function () {
 Plantilla.form = {
     NOMBRE: "form-deportista-nombre",
     APELLIDOS: "form-deportista-apellidos",
-    FECHA_NAC: "form-deportista-f_nac",
+    //FECHA_NAC: "form-deportista-f_nac",
     NACIONALIDAD: "form-deportista-nacionalidad",
-    AÑOS_DE_P_MUNDIAL: "form-deportistas-años_de_p_mundial",
-    NUM_JJOO: "form-deportista-n_participacion_jo",
+    //AÑOS_DE_P_MUNDIAL: "form-deportistas-años_de_p_mundial",
+    NUM_JJOO: "form-deportista-numero_de_participaciones_juegos_olimpicos",
 }
 
 /**
@@ -613,12 +613,12 @@ Plantilla.guardar = async function () {
             referrer: 'no-referrer', // no-referrer, *client
             body: JSON.stringify({
                 "id_deportista": id_deportista,
-                "nombre_deportista": document.getElementById("form-deportista-nombre").value,
-                "apellidos_deportista": document.getElementById("form-deportista-apellidos").value,
-                "f_nac_deportista": document.getElementById("form-deportista-f_nac").value,
-                "nacionalidad_deportista": document.getElementById("form-deportista-nacionalidad").value,
-                "años_de_p_mundial_": document.getElementById("form-deportistas-años_de_p_mundial").value,
-                "n_participacion_jo": document.getElementById("form-deportista-n_participacion_jo").value
+                "nombre": document.getElementById("form-deportista-nombre").value,
+                "apellidos": document.getElementById("form-deportista-apellidos").value,
+                "fecha_nacimiento": document.getElementById("form-deportista-f_nac").value,
+                "nacionalidad": document.getElementById("form-deportista-nacionalidad").value,
+                "años_de_participacion_mundial": document.getElementById("form-deportistas-años_de_p_mundial").value,
+                "numero_de_participaciones_juegos_olimpicos": document.getElementById("form-deportista-numero_de_participaciones_juegos_olimpicos").value
             }), // body data type must match "Content-Type" header
         })
             
@@ -637,38 +637,52 @@ Plantilla.guardar = async function () {
 }
 //-----------------------------------------------------------------------------------------------------------
 // HU 07:Ver los datos de un determinado jugador/equipo, cambiando con un solo click para ver los datos del anterior o del siguiente.
- Plantilla.cambiarIdDeportista = function (accion) {
-    // Obtener el idDeportista actual
-    var idActual = parseInt(document.getElementById('idDeportista').value);
-  
-    // Actualizar el idDeportista según la acción
-    if (accion === 'avanzar') {
-      idActual++;
-    } else if (accion === 'retroceder') {
-      idActual--;
-    }
-  
-    // Actualizar el valor de id
-    document.getElementById('idDeportista').value = idActual;
-  
-    // Llamar a la función Plantilla.mostrar()
-    Plantilla.mostrar(idActual);
-  }
-  
-  Plantilla.init = function() {
-    // Agregar event listeners a los botones
-    document.getElementById('avanzar-btn').addEventListener('click', function() {
-        Plantilla.cambiarIdDeportista('avanzar');
-      });
-  
-      document.getElementById('retroceder-btn').addEventListener('click', function() {
-        Plantilla.cambiarIdDeportista('retroceder');
-      });
-    }
-  
-  // Llamar a la función init una vez que la página esté cargada
-  document.addEventListener('DOMContentLoaded', function() {
-    Plantilla.init();
-  });
-
+ 
 //-----------------------------------------------------------------------------------------------------------
+
+Plantilla.recuperaUnoPorUno = async function (posicion, callBackFn) {
+    let response = null
+
+    // Intento conectar con el microservicio deportistas
+    try {
+        const url = Frontend.API_GATEWAY + "/plantilla/getTodas"
+        response = await fetch(url)
+
+    } catch (error) {
+        alert("Error: No se han podido acceder al API Gateway")
+        console.error(error)
+        //throw error
+    }
+
+    // Muestro todas las persoans que se han descargado
+    let vectorDeportistas = null
+    if (response) {
+        vectorDeportistas = await response.json()
+        if( posicion>=vectorDeportistas.data.length ) posicion=0
+        callBackFn(vectorDeportistas.data[posicion])
+    }
+}
+Plantilla.listarUnoPorUno = function (posicion) {
+    this.recuperaUnoPorUno(posicion, this.imprimeUnDeportista);
+ }
+ Plantilla.avanzar = function(){
+    posicionActual++; // Incrementar posición actual
+    Plantilla.listarUnoPorUno(posicionActual);
+ }
+
+ Plantilla.retroceder = function () {
+    if (posicionActual > 0) { // Solo retroceder si no estamos en la primera posición
+      posicionActual--; // Decrementar posición actual
+      Plantilla.listarUnoPorUno(posicionActual); // Llamar a listarUnoPorUno con nueva posición actual
+    }
+  }
+
+  // Obtener referencias a los botones anteriores
+const botonAnterior = document.getElementById("botonAnterior");
+const botonSiguiente = document.getElementById("botonSiguiente");
+
+// Agregar eventos onclick a los botones
+botonAnterior.onclick = Plantilla.retroceder;
+botonSiguiente.onclick = Plantilla.avanzar;
+
+ //-----------------------------------------------------------------------------------------------------------

@@ -108,7 +108,7 @@ getPorId: async (req, res) => {
 },
 
 /**
-    * Método para ocambiar los datos de una persona
+    * Método para cambiar los datos de una persona
     * @param {*} req Objeto con los parámetros que se han pasado en la llamada a esta URL 
     * @param {*} res Objeto Response con las respuesta que se va a dar a la petición recibida
     */
@@ -128,11 +128,17 @@ setTodo: async (req, res) => {
                     data: {
                         nombre: data.nombre,
                         apellidos: data.apellidos,
-                        fecha_nacimiento: data.fecha_nacimiento,
                         nacionalidad: data.nacionalidad,
                         años_de_participacion_mundial: data.años_de_participacion_mundial,
                         numero_de_participaciones_juegos_olimpicos: data.numero_de_participaciones_juegos_olimpicos,
                     },
+                       /* nombre: data.nombre_deportista,
+                        apellidos: data.apellidos_deportista,
+                        fecha_nacimiento: data.f_nac_deportista,
+                        nacionalidad: data.nacionalidad_deportista,
+                        años_de_participacion_mundial: data.años_de_p_mundial_,
+                        numero_de_participaciones_juegos_olimpicos: data.n_participacion_jo,*/
+                    
                 },
             )
         )
