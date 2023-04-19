@@ -317,6 +317,10 @@ Plantilla.plantillaFormularioDeportista.formulario = `
                     <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar</a></div>
                     <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
                     <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
+                    <div>
+                    <button id="retroceder-btn">Retroceder</button>
+                    <button id="avanzar-btn">Avanzar</button>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -373,7 +377,7 @@ Plantilla.sustituyeTags = function (plantilla, deportista) {
         .replace(new RegExp(Plantilla.plantillaTags.ID, 'g'), deportista.ref['@ref'].id)
         .replace(new RegExp(Plantilla.plantillaTags.NOMBRE, 'g'), deportista.data.nombre)
         .replace(new RegExp(Plantilla.plantillaTags.APELLIDOS, 'g'), deportista.data.apellidos)
-        .replace(new RegExp(Plantilla.plantillaTags.FECHA_NAC, 'g'), deportista.data.fecha_nacimiento.dia + "/" + deportista.data.fecha_nacimiento.mes + "/" + deportista.data.fecha_nacimiento.año  )
+        .replace(new RegExp(Plantilla.plantillaTags.FECHA_NAC, 'g'), deportista.data.fecha_nacimiento.dia + "/" + deportista.data.fecha_nacimiento.mes + "/" + deportista.data.fecha_nacimiento.año)
         .replace(new RegExp(Plantilla.plantillaTags.NACIONALIDAD, 'g'), deportista.data.nacionalidad.pais + "/" + deportista.data.nacionalidad.comunidad + "/" + deportista.data.nacionalidad.provincia)
         .replace(new RegExp(Plantilla.plantillaTags["AÑOS_MUNDIAL"], 'g'), deportista.data.años_de_participacion_mundial)
         .replace(new RegExp(Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"], 'g'), deportista.data.numero_de_participaciones_juegos_olimpicos)
@@ -632,4 +636,39 @@ Plantilla.guardar = async function () {
     }
 }
 //-----------------------------------------------------------------------------------------------------------
+// HU 07:Ver los datos de un determinado jugador/equipo, cambiando con un solo click para ver los datos del anterior o del siguiente.
+ Plantilla.cambiarIdDeportista = function (accion) {
+    // Obtener el idDeportista actual
+    var idActual = parseInt(document.getElementById('idDeportista').value);
+  
+    // Actualizar el idDeportista según la acción
+    if (accion === 'avanzar') {
+      idActual++;
+    } else if (accion === 'retroceder') {
+      idActual--;
+    }
+  
+    // Actualizar el valor de id
+    document.getElementById('idDeportista').value = idActual;
+  
+    // Llamar a la función Plantilla.mostrar()
+    Plantilla.mostrar(idActual);
+  }
+  
+  Plantilla.init = function() {
+    // Agregar event listeners a los botones
+    document.getElementById('avanzar-btn').addEventListener('click', function() {
+        Plantilla.cambiarIdDeportista('avanzar');
+      });
+  
+      document.getElementById('retroceder-btn').addEventListener('click', function() {
+        Plantilla.cambiarIdDeportista('retroceder');
+      });
+    }
+  
+  // Llamar a la función init una vez que la página esté cargada
+  document.addEventListener('DOMContentLoaded', function() {
+    Plantilla.init();
+  });
 
+//-----------------------------------------------------------------------------------------------------------

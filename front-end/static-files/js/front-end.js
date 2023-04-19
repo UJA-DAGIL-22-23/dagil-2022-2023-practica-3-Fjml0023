@@ -34,7 +34,8 @@ Frontend.Article = {}
  * @param {String} titulo Información para el título del article 
  * @param {String} contenido INformacion para el contenido del article
  * @returns El propio Article para concatenar llamadas
- 
+ */
+/*
 Frontend.Article.actualizar = function (titulo, contenido) {
     // Si son nulos, los sustituyo por la cadena vacía
     titulo = titulo || ""

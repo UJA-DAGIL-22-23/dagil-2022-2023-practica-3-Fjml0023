@@ -126,12 +126,12 @@ setTodo: async (req, res) => {
                 q.Ref(q.Collection(COLLECTION), data.id_deportista),
                 {
                     data: {
-                        nombre: data.nombre_deportista,
-                        apellidos: data.apellidos_deportista,
-                        fecha_nacimiento: data.f_nac_deportista,
-                        nacionalidad: data.nacionalidad_deportista,
-                        años_de_participacion_mundial: data.años_de_p_mundial_,
-                        numero_de_participaciones_juegos_olimpicos: n_participacion_jo,
+                        nombre: data.nombre,
+                        apellidos: data.apellidos,
+                        fecha_nacimiento: data.fecha_nacimiento,
+                        nacionalidad: data.nacionalidad,
+                        años_de_participacion_mundial: data.años_de_participacion_mundial,
+                        numero_de_participaciones_juegos_olimpicos: data.numero_de_participaciones_juegos_olimpicos,
                     },
                 },
             )
