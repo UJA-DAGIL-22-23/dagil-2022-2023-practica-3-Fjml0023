@@ -314,7 +314,8 @@ Plantilla.plantillaFormularioDeportista.formulario = `
                         value="${Plantilla.plantillaTags["NUM PARTICIPACION J OLIMPICOS"]}" 
                         name="numero_de_participaciones_juegos_olimpicos"/></td>
                 <td>
-                    <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar</a></div>
+                    <div><a href="javascript:Plantilla.editarNombre()" class="opcion-secundaria mostrar">Editar nombre</a></div>
+                    <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar varios campos</a></div>
                     <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
                     <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
                     <div>
@@ -424,7 +425,6 @@ Plantilla.imprimeUnDeportista = function (deportista) {
     // Actualiza el objeto que guarda los datos mostrados
     Plantilla.almacenaDatos(deportista)
 }
-
 /**
  * Función que recuperar todas los deportistas llamando al MS Plantilla. 
  * Posteriormente, llama a la función callBackFn para trabajar con los datos recuperados.
@@ -444,7 +444,6 @@ Plantilla.recuperaUnDeportista = async function (idDeportista, callBackFn) {
         console.error(error)
     }
 }
-
 /**
  * Función principal para mostrar los datos de un deportista desde el MS y, posteriormente, imprimirla.
  * @param {String} idDeportista Identificador del deportista a mostrar
@@ -489,9 +488,7 @@ Plantilla.recuperaDatosAlmacenados = function () {
 Plantilla.form = {
     NOMBRE: "form-deportista-nombre",
     APELLIDOS: "form-deportista-apellidos",
-    //FECHA_NAC: "form-deportista-f_nac",
     NACIONALIDAD: "form-deportista-nacionalidad",
-    //AÑOS_DE_P_MUNDIAL: "form-deportistas-años_de_p_mundial",
     NUM_JJOO: "form-deportista-numero_de_participaciones_juegos_olimpicos",
 }
 
@@ -527,7 +524,7 @@ Plantilla.habilitarCamposEditables = function () {
 }
 
 /**
- * ????Muestra las opciones que tiene el usuario cuando selecciona Editar
+ * ????Muestra las opciones que tiene el deportista cuando selecciona Editar
  * @returns El propio objeto Deportistas, para concatenar llamadas
  */
 Plantilla.opcionesMostrarOcultar = function (classname, mostrando) {
@@ -639,7 +636,7 @@ Plantilla.guardar = async function () {
 // HU 07:Ver los datos de un determinado jugador/equipo, cambiando con un solo click para ver los datos del anterior o del siguiente.
  
 //-----------------------------------------------------------------------------------------------------------
-
+/*
 Plantilla.recuperaUnoPorUno = async function (posicion, callBackFn) {
     let response = null
 
@@ -684,5 +681,26 @@ const botonSiguiente = document.getElementById("botonSiguiente");
 // Agregar eventos onclick a los botones
 botonAnterior.onclick = Plantilla.retroceder;
 botonSiguiente.onclick = Plantilla.avanzar;
-
+*/
+ //-----------------------------------------------------------------------------------------------------------
+ //HU 12: Modificar el nombre de un jugador/equipo.
+ Plantilla.editarNombre = function () {
+    this.ocultarOpcionesSecundarias()
+    this.mostrarOcionesTerciariasEditar()
+    this.habilitarCampoNombre()
+}
+Plantilla.habilitarCampoNombre = function () {
+    Plantilla.habilitarDeshabilitarCampoNombre(false)
+    return this
+}
+Plantilla.habilitarDeshabilitarCampoNombre = function (deshabilitando) {
+    deshabilitando = (typeof deshabilitando === "undefined" || deshabilitando === null) ? true : deshabilitando
+    for (let campo in Plantilla.formNombre) {
+        document.getElementById(Plantilla.formNombre[campo]).disabled = deshabilitando
+    }
+    return this
+}
+Plantilla.formNombre = {
+    NOMBRE: "form-deportista-nombre",
+}
  //-----------------------------------------------------------------------------------------------------------

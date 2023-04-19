@@ -416,11 +416,4 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
       expect(obtenido).toEqual(esperado);
     });
   });
-
-
-  
-  
-  
-  
-  
 //-----------------------------------------------------------------------------------------------------------
