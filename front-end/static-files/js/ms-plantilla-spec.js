@@ -142,11 +142,18 @@ Esto afecta a los métodos:
 
  //HU 04: Ver un listado con todos los datos de todos los jugadores/equipos.---------------------------------
  // SPECS para Jasmine
-describe("Prueba de pieTable HU 04", function () {
-    it("debería devolver las etiquetas HTML para el pie de tabla",
-        function () {
-            expect(Plantilla.pieTable()).toBe("</tbody></table>");
-        });
+
+ describe("Prueba de cabeceraTable HU 04", function() {
+  it("Se deberia devolver una cadena HTML con la cabecera de la tabla", function() {
+    const resultadoEsperado =`<table class="listado-deportistas">
+        <thead>
+        <th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años_mundial</th><th>Num_Juegos_olimpicos</th>
+        </thead>
+        <tbody>
+    `;
+    const resultadoObtenido = Plantilla.cabeceraTable();
+    expect(resultadoObtenido).toEqual(resultadoEsperado);
+  });
 });
 
 describe("Prueba de cuerpoTr HU 04", function () {
@@ -156,7 +163,7 @@ describe("Prueba de cuerpoTr HU 04", function () {
        nombre: "el nombre del deportista"
         ,apellidos: "los apellidos del deportista"
         ,fecha_nacimiento: { dia: 467, mes: 589, año: 6023 }
-        ,nacionalidad: { pais: "España", comunidad: "Andalucia", provincia: "Jaen"}
+        ,nacionalidad: "España"
         ,años_de_participacion_mundial: [1995,2004]
         ,numero_de_participaciones_juegos_olimpicos: 3
     }
@@ -172,13 +179,20 @@ describe("Prueba de cuerpoTr HU 04", function () {
             expect(msj.includes(d.fecha_nacimiento.dia)).toBeTrue();
             expect(msj.includes(d.fecha_nacimiento.mes)).toBeTrue();
             expect(msj.includes(d.fecha_nacimiento.año)).toBeTrue();
-            expect(msj.includes(d.nacionalidad.pais)).toBeTrue();
-            expect(msj.includes(d.nacionalidad.comunidad)).toBeTrue();
-            expect(msj.includes(d.nacionalidad.provincia)).toBeTrue();
+            expect(msj.includes(d.nacionalidad)).toBeTrue();
             expect(msj.includes(d.años_de_participacion_mundial)).toBeTrue();
             expect(msj.includes(d.numero_de_participaciones_juegos_olimpicos)).toBeTrue();
         });
 });
+
+describe("Prueba de pieTable HU 04", function() {
+  it("Se deberia devolver una cadena HTML con el pie de la tabla", function() {
+    const resultadoEsperado = "</tbody></table>";
+    const resultadoObtenido = Plantilla.pieTable();
+    expect(resultadoObtenido).toEqual(resultadoEsperado);
+  });
+});
+
 
 describe("Prueba de recupera HU 04", function() {
     beforeEach(function() {
@@ -197,20 +211,6 @@ describe("Prueba de recupera HU 04", function() {
     });
   });
 
-  describe("Prueba de cabeceraTable HU 04", function() {
-    it("Se deberia devolver una cadena HTML con la cabecera de la tabla", function() {
-      const resultadoEsperado =`<table class="listado-deportistas">
-        <thead>
-        <th>Nombre</th><th>Apellidos</th><th>Fecha Nac</th><th>Nacionalidad</th><th>Años_mundial</th><th>Num_Juegos_olimpicos</th>
-        </thead>
-        <tbody>
-    `;
-      const resultadoObtenido = Plantilla.cabeceraTable();
-      expect(resultadoObtenido).toEqual(resultadoEsperado);
-    });
-  });
-  
-
     describe("Prueba de listar HU 04", function () {
         it("debería llamar a recupera", function() {
             // Espía para la funcion recupera
@@ -223,6 +223,27 @@ describe("Prueba de recupera HU 04", function() {
           
 //-----------------------------------------------------------------------------------------------------------
 //HU 02: Ver un listado solo con los nombres de todos los jugadores/equipos.---------------------------------
+describe("Prueba listarnombre HU 02", function() {
+  beforeEach(function() {
+  // Le paso datos a  recupera() para que devuelva una lista de deportistas
+    spyOn(Plantilla, "recupera").and.callFake(function(callback) {
+      callback([
+        {nombre: "Juan"},
+        {nombre: "Pepe"},
+        {nombre: "Domi"}
+      ]);
+    });
+  });
+  
+  it("Se debería llamar a la función Plantilla.imprimenombre al ejecutar Plantilla.listarnombre", function() {
+    spyOn(Plantilla, "imprimenombre");
+    
+    Plantilla.listarnombre();
+    
+    expect(Plantilla.imprimenombre).toHaveBeenCalled();
+  });
+});
+
 describe("Prueba nombreTr HU 02", function () {
 
     // Preparo los datos
@@ -239,27 +260,24 @@ describe("Prueba nombreTr HU 02", function () {
             expect(msj.includes(d.nombre)).toBeTrue();
         });
 });
+describe("Pruebas para imprimenombre HU 02", function() {
+  it("debe imprimir los nombres", function() {
+    // Preparamos los datos
+    let vector = [
+      { data: { nombre: "Zoe" } },
+      { data: { nombre: "Ana" } },
+      { data: { nombre: "Carlos" } }
+    ];
 
-describe("Prueba listarnombre HU 02", function() {
-    beforeEach(function() {
-    // Le paso datos a  recupera() para que devuelva una lista de deportistas
-      spyOn(Plantilla, "recupera").and.callFake(function(callback) {
-        callback([
-          {nombre: "Juan"},
-          {nombre: "Pepe"},
-          {nombre: "Domi"}
-        ]);
-      });
-    });
-    
-    it("Se debería llamar a la función Plantilla.imprimenombre al ejecutar Plantilla.listarnombre", function() {
-      spyOn(Plantilla, "imprimenombre");
-      
-      Plantilla.listarnombre();
-      
-      expect(Plantilla.imprimenombre).toHaveBeenCalled();
-    });
+    Plantilla.imprimenombre(vector);
+
+    // Verifico que el vector fue ordenado correctamente
+    expect(vector[0].data.nombre).toBe("Zoe");
+    expect(vector[1].data.nombre).toBe("Ana");
+    expect(vector[2].data.nombre).toBe("Carlos");
   });
+});
+
 //-----------------------------------------------------------------------------------------------------------
 //HU 03: Ver un listado solo con los nombres de todos los jugadores/equipos ordenados alfabéticamente.-------
 describe("Pruebas para listarnombreordenado HU 03", function() {
@@ -296,6 +314,29 @@ describe("Pruebas para imprimenombreOrdenado HU 03", function() {
 
 //-----------------------------------------------------------------------------------------------------------
 //HU 06: Ver todos los datos de un determinado jugador/equipo.-----------------------------------------------
+describe("Prueba de deportistaMostrado HU 06", () => {
+
+  beforeEach(() => {
+    // Reiniciamos la variable antes de cada prueba
+    Plantilla.deportistaMostrado = null;
+  });
+
+  it("Debe inicializarse en null", () => {
+    expect(Plantilla.deportistaMostrado).toBeNull();
+  });
+
+  it("Debe tener el valor correcto después de asignación", () => {
+    const deportista = { nombre: "Juan", deporte: "tenis" };
+
+    // Asignamos el valor al deportista mostrado
+    Plantilla.deportistaMostrado = deportista;
+
+    // Verificamos que la variable tenga el valor correcto
+    expect(Plantilla.deportistaMostrado).toEqual(deportista);
+  });
+
+});
+
 describe("Pruebas para plantillaTablaDeportistas HU 06", function() {
     it("La cabecera de la tabla debería generarse correctamente", function() {
       let esperado =`<table width="100%" class="listado-deportistas">
@@ -400,21 +441,198 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
     });
   });
 
-  describe("Pruebas para plantillaTags HU 06", function() {
-    it("Las etiquetas de la plantilla deberían generarse correctamente", function() {
-      let esperado = {
-        "ID": "### ID ###",
-        "NOMBRE": "### NOMBRE ###",
-        "APELLIDOS": "### APELLIDOS ###",
-        "FECHA_NAC": "### FECHA_NAC ###",
-        "NACIONALIDAD": "### NACIONALIDAD ###",
-        "AÑOS_MUNDIAL":  "### AÑOS_MUNDIAL ###",
-        "NUM PARTICIPACION J OLIMPICOS": "### NUM PARTICIPACION J OLIMPICOS ###",
-      };
-      
-      let obtenido = Plantilla.plantillaTags;
-      
-      expect(obtenido).toEqual(esperado);
-    });
+describe("Pruebas para plantillaTags HU 06", function() {
+  it("Las etiquetas de la plantilla deberían generarse correctamente", function() {
+    let esperado = {
+      "ID": "### ID ###",
+      "NOMBRE": "### NOMBRE ###",
+      "APELLIDOS": "### APELLIDOS ###",
+      "FECHA_NAC": "### FECHA_NAC ###",
+      "NACIONALIDAD": "### NACIONALIDAD ###",
+      "AÑOS_MUNDIAL":  "### AÑOS_MUNDIAL ###",
+      "NUM PARTICIPACION J OLIMPICOS": "### NUM PARTICIPACION J OLIMPICOS ###",
+    };
+    
+    let obtenido = Plantilla.plantillaTags;
+    
+    expect(obtenido).toEqual(esperado);
   });
+});
+
+
+describe("Prueba de sustituyeTags HU 06", () => {
+
+  const plantilla = "El deportista {ID} se llama {NOMBRE} {APELLIDOS}, nació el {FECHA_NAC} en {NACIONALIDAD}, ha participado en {AÑOS_MUNDIAL} mundiales y {NUM PARTICIPACION J OLIMPICOS} juegos olímpicos.";
+  
+  const deportista = {
+    ref: { "@ref": { id: "abc123" } },
+    data: {
+      nombre: "Juan",
+      apellidos: "Pérez",
+      fecha_nacimiento: { dia: 10, mes: 5, año: 1990 },
+      nacionalidad: "Mexico",
+      años_de_participacion_mundial: 2,
+      numero_de_participaciones_juegos_olimpicos: 1
+    }
+  };
+
+  const resultadoEsperado = "El deportista {ID} se llama {NOMBRE} {APELLIDOS}, nació el {FECHA_NAC} en {NACIONALIDAD}, ha participado en {AÑOS_MUNDIAL} mundiales y {NUM PARTICIPACION J OLIMPICOS} juegos olímpicos.";
+
+  it("Debe sustituir correctamente las etiquetas en la plantilla", () => {
+    expect(Plantilla.sustituyeTags(plantilla, deportista)).toEqual(resultadoEsperado);
+  });
+
+});
+
+describe('Prueba de plantillaTablaDeportistas.actualiza', function() {
+  it('llama a la función sustituyeTags con los argumentos correctos', function() {
+    spyOn(Plantilla, 'sustituyeTags');
+    
+    const deportista = {
+      nombre: 'Juan',
+      apellido: 'Pérez',
+      edad: 25,
+      deporte: 'natación'
+    };
+    const resultado = Plantilla.plantillaTablaDeportistas.actualiza(deportista);
+    
+    expect(Plantilla.sustituyeTags).toHaveBeenCalledWith(
+      Plantilla.plantillaTablaDeportistas.cuerpo,
+      deportista
+    );
+    expect(resultado).toEqual(resultado);
+  });
+});
+
+describe('Prueba de plantillaFormularioDeportista.actualiza', function() {
+  it('debería llamar a Plantilla.sustituyeTags con this.formulario y el deportista correcto', function() {
+    spyOn(Plantilla, 'sustituyeTags');
+    const formularioMock = '<form><input type="text" name="nombre" value="%nombre%"><input type="text" name="apellido" value="%apellido%"><input type="number" name="edad" value="%edad%"><input type="text" name="deporte" value="%deporte%"></form>';
+    const deportista = {
+      nombre: 'Juan',
+      apellido: 'Pérez',
+      edad: 25,
+      deporte: 'natación'
+    }
+    
+    const resultado = Plantilla.plantillaFormularioDeportista.actualiza.call({formulario: formularioMock}, deportista);
+    
+    expect(Plantilla.sustituyeTags).toHaveBeenCalledWith(formularioMock, deportista);
+    expect(resultado).toEqual(resultado);
+  });
+});
+describe('Prueba de imprimeUnDeportista', function() {
+  beforeEach(function () {
+    // Crea un espía en las funciones que usará la prueba
+    spyOn(Plantilla, 'deportistaComoFormulario').and.returnValue('<form>Mocked form</form>');
+    spyOn(Frontend.Article, 'actualizar');
+    spyOn(Plantilla, 'almacenaDatos');
+  });
+
+  it('debería llamar a Plantilla.deportistaComoFormulario con el deportista correcto', function() {    
+    const deportista = {
+      nombre: 'Juan',
+      apellido: 'Pérez',
+      edad: 25,
+      deporte: 'natación'
+    }
+
+    Plantilla.imprimeUnDeportista(deportista);
+    
+    expect(Plantilla.deportistaComoFormulario).toHaveBeenCalledWith(deportista);
+  });
+  
+  it('debería llamar a Frontend.Article.actualizar con los parámetros correctos', function() {    
+    const deportista = {
+      nombre: 'Juan',
+      apellido: 'Pérez',
+      edad: 25,
+      deporte: 'natación'
+    }
+    const formularioMock = '<form>Mocked form</form>';
+
+    Plantilla.imprimeUnDeportista(deportista);
+    
+    expect(Frontend.Article.actualizar).toHaveBeenCalledWith("Mostrar un deportista", formularioMock);
+  });
+  
+  it('debería llamar a Plantilla.almacenaDatos con el deportista correcto', function() {    
+    const deportista = {
+      nombre: 'Juan',
+      apellido: 'Pérez',
+      edad: 25,
+      deporte: 'natación'
+    }
+
+    Plantilla.imprimeUnDeportista(deportista);
+    
+    expect(Plantilla.almacenaDatos).toHaveBeenCalledWith(deportista);
+  });
+});
+
+describe('Prueba de deportistaComoFormulario', function() {
+it('llama a la función actualiza con el argumento correcto', function() {
+  spyOn(Plantilla.plantillaFormularioDeportista, 'actualiza');
+  
+  const deportista = {
+    nombre: 'Juan',
+    apellido: 'Pérez',
+    edad: 25,
+    deporte: 'natación'
+  };
+  const resultado = Plantilla.deportistaComoFormulario(deportista);
+  
+  expect(Plantilla.plantillaFormularioDeportista.actualiza).toHaveBeenCalledWith(
+    deportista
+  );
+  expect(resultado).toEqual(resultado);
+});
+});
+
+describe('Prueba para mostrar', function() {
+  beforeEach(function () {
+    // Crea un espía en las funciones que usará la prueba
+    spyOn(Plantilla, 'recuperaUnDeportista');
+  });
+
+  it('debería llamar a Plantilla.recuperaUnDeportista con el idDeportista correcto', function() {
+    const idDeportista = 123;
+
+    Plantilla.mostrar(idDeportista);
+
+    expect(Plantilla.recuperaUnDeportista).toHaveBeenCalledWith(idDeportista, jasmine.any(Function));
+  });
+});
+
+
+describe('Prueba de deportistaComoTabla', function() {
+  let spyCabecera, spyActualiza, spyPie;
+  const deportista = {
+    ref: { '@ref': { id: 'abc123' } },
+    data: {
+      nombre: 'Juan',
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
+    }
+  };
+
+  beforeEach(function() {
+    spyActualiza = spyOn(Plantilla.plantillaTablaDeportistas, 'actualiza').and.callThrough();
+  });
+
+  it('debería llamar a la funcione actualiza de la plantilla', function() {
+    const resultadoObtenido = Plantilla.deportistaComoTabla(deportista);
+    expect(spyActualiza).toHaveBeenCalledWith(deportista);
+
+  });
+});
+  
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+//HU 13:Modificar varios de los datos a la vez de un jugador/equipo. Se deberán poder modificar al menos 3 campos además del nombre-------
+
+
 //-----------------------------------------------------------------------------------------------------------

@@ -159,7 +159,7 @@ Plantilla.cuerpoTr = function (p) {
     <td>${d.nombre}</td>
     <td>${d.apellidos}</td>
     <td>${d.fecha_nacimiento.dia}/${d.fecha_nacimiento.mes}/${d.fecha_nacimiento.año}</td>
-    <td>${d.nacionalidad.pais} ( ${d.nacionalidad.comunidad}-${d.nacionalidad.provincia} )</td>
+    <td>${d.nacionalidad}</td>
     <td>${d.años_de_participacion_mundial}</td>
     <td>${d.numero_de_participaciones_juegos_olimpicos}</td>
     </tr>
@@ -633,6 +633,28 @@ Plantilla.guardar = async function () {
     }
 }
 //-----------------------------------------------------------------------------------------------------------
+
+ //HU 12: Modificar el nombre de un jugador/equipo.--------------------------------------------------------
+ Plantilla.editarNombre = function () {
+    this.ocultarOpcionesSecundarias()
+    this.mostrarOcionesTerciariasEditar()
+    this.habilitarCampoNombre()
+}
+Plantilla.habilitarCampoNombre = function () {
+    Plantilla.habilitarDeshabilitarCampoNombre(false)
+    return this
+}
+Plantilla.habilitarDeshabilitarCampoNombre = function (deshabilitando) {
+    deshabilitando = (typeof deshabilitando === "undefined" || deshabilitando === null) ? true : deshabilitando
+    for (let campo in Plantilla.formNombre) {
+        document.getElementById(Plantilla.formNombre[campo]).disabled = deshabilitando
+    }
+    return this
+}
+Plantilla.formNombre = {
+    NOMBRE: "form-deportista-nombre",
+}
+ //-----------------------------------------------------------------------------------------------------------
 // HU 07:Ver los datos de un determinado jugador/equipo, cambiando con un solo click para ver los datos del anterior o del siguiente.
  
 //-----------------------------------------------------------------------------------------------------------
@@ -682,25 +704,4 @@ const botonSiguiente = document.getElementById("botonSiguiente");
 botonAnterior.onclick = Plantilla.retroceder;
 botonSiguiente.onclick = Plantilla.avanzar;
 */
- //-----------------------------------------------------------------------------------------------------------
- //HU 12: Modificar el nombre de un jugador/equipo.
- Plantilla.editarNombre = function () {
-    this.ocultarOpcionesSecundarias()
-    this.mostrarOcionesTerciariasEditar()
-    this.habilitarCampoNombre()
-}
-Plantilla.habilitarCampoNombre = function () {
-    Plantilla.habilitarDeshabilitarCampoNombre(false)
-    return this
-}
-Plantilla.habilitarDeshabilitarCampoNombre = function (deshabilitando) {
-    deshabilitando = (typeof deshabilitando === "undefined" || deshabilitando === null) ? true : deshabilitando
-    for (let campo in Plantilla.formNombre) {
-        document.getElementById(Plantilla.formNombre[campo]).disabled = deshabilitando
-    }
-    return this
-}
-Plantilla.formNombre = {
-    NOMBRE: "form-deportista-nombre",
-}
  //-----------------------------------------------------------------------------------------------------------
