@@ -64,62 +64,72 @@ describe("Frontend.Article.actualizar: ", function () {
 })*/
 
 //MIO----------------------------------------------------------------------------
-describe("Frontend.Article.actualizar: ", function () {
-    const elementoTitulo = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_TITULO)
-    const elementoContenido = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_CONTENIDO)
-    const tituloPrueba = "Titulo de prueba"
-    const contenidoPrueba = "Contenido de prueba"
-    it("para títulos y contenidos nulos, debe dejar vacíos las correspondientes secciones del article",
-        function () {
-            // Probamos valores nulos
-            Frontend.Article.actualizar()
-            expect(elementoTitulo.innerHTML.trim()).toBe("")
-            expect(elementoContenido.innerHTML.trim()).toBe("")
 
-            Frontend.Article.actualizar(null, null)
-            expect(elementoTitulo.innerHTML.trim()).toBe("")
-            expect(elementoContenido.innerHTML.trim()).toBe("")
+describe('Prueba de la función Frontend.Article.borrarTitulo', function () {
+    it('Debería borrar el contenido del elemento HTML', function () {
+      Frontend.Article.borrarTitulo();
+  
+      // Obtenemos el contenido actual del elemento HTML
+      const tituloActual = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_TITULO).innerHTML;
+  
+      // Verificamos que el contenido esté vacío después de llamar a la función
+      expect(tituloActual).toEqual('');
+    });
+  });
+  
 
-            Frontend.Article.actualizar(null)
-            expect(elementoTitulo.innerHTML.trim()).toBe("")
-            expect(elementoContenido.innerHTML.trim()).toBe("")
+describe('Prueba de la función Frontend.Article.borrarContenido', function () {
+    it('Debería borrar el contenido del elemento HTML', function () {
+      Frontend.Article.borrarContenido();
+  
+      // Obtenemos el contenido actual del elemento HTML
+      const contenidoActual = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_CONTENIDO).innerHTML;
+  
+      // Verificamos que el contenido esté vacío después de llamar a la función
+      expect(contenidoActual).toEqual('');
+    });
+  });
+  
 
-            // Probamos valores vacíos
-            Frontend.Article.actualizar("")
-            expect(elementoTitulo.innerHTML.trim()).toBe("")
-            expect(elementoContenido.innerHTML.trim()).toBe("")
+describe("Prueba de la función Frontend.Article.borrar", function () {
+    it("Debería llamar a los métodos borrarTitulo() y borrarContenido()", function () {
+      spyOn(Frontend.Article, "borrarTitulo").and.callThrough();
+      spyOn(Frontend.Article, "borrarContenido").and.callThrough();
+  
+      Frontend.Article.borrar();
+  
+      // Verificamos que ambos métodos se llamen correctamente
+      expect(Frontend.Article.borrarTitulo).toHaveBeenCalled();
+      expect(Frontend.Article.borrarContenido).toHaveBeenCalled();
+    });
+  });
+  
 
-            Frontend.Article.actualizar("", "")
-            expect(elementoTitulo.innerHTML.trim()).toBe("")
-            expect(elementoContenido.innerHTML.trim()).toBe("")
-        })
-    it("Debe actualizar el titulo y el contenido de las secciones del article",
-        function () {
-            // Probamos solo el título
-            Frontend.Article.actualizar(tituloPrueba)
-            expect(elementoTitulo.innerHTML.trim()).toBe(tituloPrueba)
-            expect(elementoContenido.innerHTML.trim()).toBe("")
-
-            // Probamos solo el contenido
-            Frontend.Article.actualizar("", contenidoPrueba)
-            expect(elementoTitulo.innerHTML.trim()).toBe("")
-            expect(elementoContenido.innerHTML.trim()).toBe(contenidoPrueba)
-
-            // Probamos ambos
-            Frontend.Article.actualizar(tituloPrueba, contenidoPrueba)
-            expect(elementoTitulo.innerHTML.trim()).toBe(tituloPrueba)
-            expect(elementoContenido.innerHTML.trim()).toBe(contenidoPrueba)
-        })
-    it("Debe devolver el propio objeto",
-        function () {
-            // Probamos diversas llamadas con distintos parámetros
-            expect(Frontend.Article.actualizar()).toBe(Frontend.Article)
-            expect(Frontend.Article.actualizar(tituloPrueba)).toBe(Frontend.Article)
-            expect(Frontend.Article.actualizar(tituloPrueba, contenidoPrueba)).toBe(Frontend.Article)
-        })
-
-})
-
+describe("Prueba de la función Frontend.Article.aniadirTitulo", function () {
+    it("Debería añadir un nuevo título al elemento HTML", function () {
+      // Simulo la creación de un nuevo título
+      const nuevoTitulo = "Listado Deportistas";
+  
+      Frontend.Article.aniadirTitulo(nuevoTitulo);
+  
+      // Verificamos que el título se haya añadido correctamente
+      const elementoTitulo = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_TITULO);
+      expect(elementoTitulo.innerHTML).toContain(nuevoTitulo);
+    });
+  });
+  
+describe("Prueba de la función Frontend.Article.aniadirContenido", function () {
+    it("Debería añadir informacion al elemento HTML article ", function () {
+      const nuevaReseña = "Hola";
+  
+      Frontend.Article.aniadirContenido(nuevaReseña);
+  
+      // Verificamos que el contenido se haya añadido correctamente
+      const elementoContenido = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_CONTENIDO);
+      expect(elementoContenido.innerHTML).toContain(nuevaReseña);
+    });
+  });
+  
 describe("Frontend.aniadirClase: ", function () {
     it("no da error con un elemento que NO tiene ninguna clase",
         function () {
@@ -183,6 +193,74 @@ describe("Frontend.quitarClase: ", function () {
 
             // Devolvemos el elemento a su estado original:
             Frontend.aniadirClase(elemento, nombreClase)
+        })
+
+})
+
+describe("Prueba de la función Frontend.Article.mostrar", function () {
+    it("Debería mostrar el artículo en el documento HTML", function () {
+  
+      Frontend.Article.mostrar();
+  
+      // Verificar que el contenido se haya mostrado correctamente
+      const elementoSeccionPrincipal = document.querySelector("#seccion-principal");
+      expect(elementoSeccionPrincipal.classList.contains("oculto")).toBe(false);
+      expect(elementoSeccionPrincipal.classList.contains("mostrar")).toBe(true);
+    });
+  });
+
+describe("Prueba de Frontend.Article.actualizar: ", function () {
+    const elementoTitulo = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_TITULO)
+    const elementoContenido = document.getElementById(Frontend.ID_SECCION_PRINCIPAL_CONTENIDO)
+    const tituloPrueba = "Titulo de prueba"
+    const contenidoPrueba = "Contenido de prueba"
+    it("para títulos y contenidos nulos, debe dejar vacíos las correspondientes secciones del article",
+        function () {
+            // Probamos valores nulos
+            Frontend.Article.actualizar()
+            expect(elementoTitulo.innerHTML.trim()).toBe("")
+            expect(elementoContenido.innerHTML.trim()).toBe("")
+
+            Frontend.Article.actualizar(null, null)
+            expect(elementoTitulo.innerHTML.trim()).toBe("")
+            expect(elementoContenido.innerHTML.trim()).toBe("")
+
+            Frontend.Article.actualizar(null)
+            expect(elementoTitulo.innerHTML.trim()).toBe("")
+            expect(elementoContenido.innerHTML.trim()).toBe("")
+
+            // Probamos valores vacíos
+            Frontend.Article.actualizar("")
+            expect(elementoTitulo.innerHTML.trim()).toBe("")
+            expect(elementoContenido.innerHTML.trim()).toBe("")
+
+            Frontend.Article.actualizar("", "")
+            expect(elementoTitulo.innerHTML.trim()).toBe("")
+            expect(elementoContenido.innerHTML.trim()).toBe("")
+        })
+    it("Debe actualizar el titulo y el contenido de las secciones del article",
+        function () {
+            // Probamos solo el título
+            Frontend.Article.actualizar(tituloPrueba)
+            expect(elementoTitulo.innerHTML.trim()).toBe(tituloPrueba)
+            expect(elementoContenido.innerHTML.trim()).toBe("")
+
+            // Probamos solo el contenido
+            Frontend.Article.actualizar("", contenidoPrueba)
+            expect(elementoTitulo.innerHTML.trim()).toBe("")
+            expect(elementoContenido.innerHTML.trim()).toBe(contenidoPrueba)
+
+            // Probamos ambos
+            Frontend.Article.actualizar(tituloPrueba, contenidoPrueba)
+            expect(elementoTitulo.innerHTML.trim()).toBe(tituloPrueba)
+            expect(elementoContenido.innerHTML.trim()).toBe(contenidoPrueba)
+        })
+    it("Debe devolver el propio objeto",
+        function () {
+            // Probamos diversas llamadas con distintos parámetros
+            expect(Frontend.Article.actualizar()).toBe(Frontend.Article)
+            expect(Frontend.Article.actualizar(tituloPrueba)).toBe(Frontend.Article)
+            expect(Frontend.Article.actualizar(tituloPrueba, contenidoPrueba)).toBe(Frontend.Article)
         })
 
 })

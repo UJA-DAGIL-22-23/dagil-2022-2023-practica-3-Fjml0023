@@ -163,7 +163,7 @@ Funcioalidades del primer incremento:
 <img src='/Capturas_de_pantalla/Funcionalidades_Incremento1.JPG'>
 <img src='/Capturas_de_pantalla/Funcionalidades_Incremento1.2.JPG'>
 
-### Segundo incremento 21/04/2023
+### Segundo incremento 24/04/2023
 Se han hecho las historias de usuario 03, 06 , 12 y 13 con sus respectivas pruebas de TDD.
 <img src='/Capturas_de_pantalla/Trello/Tablero_de_trello_segundo_incremento.JPG'>
 

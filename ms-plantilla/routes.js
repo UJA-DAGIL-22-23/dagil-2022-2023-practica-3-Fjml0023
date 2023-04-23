@@ -46,7 +46,7 @@ router.get("/test_db", async (req, res) => {
     }
 });
 
-/** COSAS MIAS ATENCION A TODO EXPLOTANDO----------------------------------------------*/
+/** COSAS MIAS ---------------------------------------------------------------------*/
 /**
  * Devuelve todas las personas que hay en la BBDD
  */
@@ -84,7 +84,7 @@ router.post("/setTodo", async (req, res) => {
     }
 });
 
-/** FIN DE LA EXPLOSION----------------------------------------------------------------*/
+/** FIN -------------------------------------------------------------------------*/
 
 
 // Exporto el módulo para poder usarlo en server
