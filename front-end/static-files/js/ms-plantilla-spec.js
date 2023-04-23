@@ -1066,4 +1066,78 @@ describe("Prueba para cancelar", function() {
 //-----------------------------------------------------------------------------------------------------------
  //HU 12: Modificar el nombre de un jugador/equipo.----------------------------------------------------------
 
+ describe("Prueba de editarNombre", function() {
+
+  it("debería llamar a las funciones necesarias para editar el nombre en la plantilla", function() {
+    spyOn(Plantilla, "ocultarOpcionesSecundarias");
+    spyOn(Plantilla, "mostrarOcionesTerciariasEditar");
+    spyOn(Plantilla, "habilitarCampoNombre");
+
+    Plantilla.editarNombre();
+
+    expect(Plantilla.ocultarOpcionesSecundarias).toHaveBeenCalled();
+    expect(Plantilla.mostrarOcionesTerciariasEditar).toHaveBeenCalled();
+    expect(Plantilla.habilitarCampoNombre).toHaveBeenCalled();
+  });
+});
+
+
+describe('Prueba de habilitarCampoNombre', function() {
+  it('debería llamar a habilitarDeshabilitarCampoNombre pasando false y devolver el objeto Plantilla', function() {
+    spyOn(Plantilla, 'habilitarDeshabilitarCampoNombre');
+    
+    var result = Plantilla.habilitarCampoNombre();
+
+    expect(Plantilla.habilitarDeshabilitarCampoNombre).toHaveBeenCalledWith(false);
+    expect(result).toEqual(Plantilla);
+  });
+});
+
+
+  describe('Pruebas para habilitarDeshabilitarCampoNombre', function() {
+    it('deberia deshabilitar todos los campos del formulario si se le pasa true', function() {
+      spyOn(document, 'getElementById').and.callFake(function(id) {
+        return { disabled: false };
+      });
+      
+      var result = Plantilla.habilitarDeshabilitarCampoNombre(true);
+
+      expect(document.getElementById.calls.count()).toEqual(Object.keys(Plantilla.formNombre).length);
+      expect(document.getElementById.calls.allArgs().flat()).toEqual(jasmine.arrayWithExactContents(Object.values(Plantilla.formNombre)));
+      expect(result).toEqual(Plantilla);
+    });
+
+    it('deberia habilitar el campo nombre del formulario si se le pasa false', function() {
+      spyOn(document, 'getElementById').and.callFake(function(id) {
+        return { disabled: true };
+      });
+      
+      var result = Plantilla.habilitarDeshabilitarCampoNombre(false);
+
+      expect(document.getElementById.calls.count()).toEqual(Object.keys(Plantilla.formNombre).length);
+      expect(document.getElementById.calls.allArgs().flat()).toEqual(jasmine.arrayWithExactContents(Object.values(Plantilla.formNombre)));
+      expect(result).toEqual(Plantilla);
+    });
+    
+    it('debería habilitar el campo nombre del formulario por defecto', function() {
+      spyOn(document, 'getElementById').and.callFake(function(id) {
+        return { disabled: true };
+      });
+      
+      var result = Plantilla.habilitarDeshabilitarCampoNombre();
+
+      expect(document.getElementById.calls.count()).toEqual(Object.keys(Plantilla.formNombre).length);
+      expect(document.getElementById.calls.allArgs().flat()).toEqual(jasmine.arrayWithExactContents(Object.values(Plantilla.formNombre)));
+      expect(result).toEqual(Plantilla);
+    });
+  });
+
+    describe('Prueba para formNombre', function() {
+      it('debería asignar correctamente los nombres de los campos', function() {
+        expect(Plantilla.formNombre.NOMBRE).toEqual("form-deportista-nombre");
+      });
+    });
+  
+
+
  //-----------------------------------------------------------------------------------------------------------
