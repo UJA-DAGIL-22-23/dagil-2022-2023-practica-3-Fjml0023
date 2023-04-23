@@ -484,43 +484,92 @@ describe("Prueba de sustituyeTags HU 06", () => {
 
 });
 
-describe('Prueba de plantillaTablaDeportistas.actualiza', function() {
-  it('llama a la función sustituyeTags con los argumentos correctos', function() {
-    spyOn(Plantilla, 'sustituyeTags');
-    
-    const deportista = {
+describe('Pruebas para plantillaTablaDeportistas.actualiza', function() {
+  it('debe llamar a Plantilla.sustituyeTags con los argumentos correctos', function() {
+    const deportista = { 
       nombre: 'Juan',
-      apellido: 'Pérez',
-      edad: 25,
-      deporte: 'natación'
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
     };
+  
+    spyOn(Plantilla, 'sustituyeTags');
+  
+    Plantilla.plantillaTablaDeportistas.cuerpo;  
     const resultado = Plantilla.plantillaTablaDeportistas.actualiza(deportista);
-    
+  
     expect(Plantilla.sustituyeTags).toHaveBeenCalledWith(
-      Plantilla.plantillaTablaDeportistas.cuerpo,
+      Plantilla.plantillaTablaDeportistas.cuerpo, 
       deportista
     );
-    expect(resultado).toEqual(resultado);
+  });
+  
+  it('debe devolver el resultado de Plantilla.sustituyeTags', function() {
+    const deportista = { 
+      nombre: 'Juan',
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
+    };
+  
+    const resultadoEsperado = 'Un resultado cualquiera';
+    spyOn(Plantilla, 'sustituyeTags').and.returnValue(resultadoEsperado);
+  
+    Plantilla.plantillaTablaDeportistas.cuerpo;
+    const resultado = Plantilla.plantillaTablaDeportistas.actualiza(deportista);
+  
+    expect(resultado).toBe(resultadoEsperado);
   });
 });
 
-describe('Prueba de plantillaFormularioDeportista.actualiza', function() {
-  it('debería llamar a Plantilla.sustituyeTags con this.formulario y el deportista correcto', function() {
-    spyOn(Plantilla, 'sustituyeTags');
-    const formularioMock = '<form><input type="text" name="nombre" value="%nombre%"><input type="text" name="apellido" value="%apellido%"><input type="number" name="edad" value="%edad%"><input type="text" name="deporte" value="%deporte%"></form>';
+
+describe('Pruebas para plantillaFormularioDeportista.actualiza', function() {
+  it('debe llamar a Plantilla.sustituyeTags con los argumentos correctos', function() {
     const deportista = {
       nombre: 'Juan',
-      apellido: 'Pérez',
-      edad: 25,
-      deporte: 'natación'
-    }
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
+    };
     
-    const resultado = Plantilla.plantillaFormularioDeportista.actualiza.call({formulario: formularioMock}, deportista);
+    spyOn(Plantilla, 'sustituyeTags');
     
-    expect(Plantilla.sustituyeTags).toHaveBeenCalledWith(formularioMock, deportista);
-    expect(resultado).toEqual(resultado);
+    Plantilla.plantillaFormularioDeportista.formulario ;
+    const resultado = Plantilla.plantillaFormularioDeportista.actualiza(deportista);
+    
+    expect(Plantilla.sustituyeTags).toHaveBeenCalledWith(
+      Plantilla.plantillaFormularioDeportista.formulario, 
+      deportista
+    );
+  });
+  
+  it('debe devolver el resultado de Plantilla.sustituyeTags', function() {
+    const deportista = {
+      nombre: 'Juan',
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
+    };
+    
+    const resultadoEsperado = 'Un resultado cualquiera';
+    spyOn(Plantilla, 'sustituyeTags').and.returnValue(resultadoEsperado);
+    
+    Plantilla.plantillaFormularioDeportista.formulario;
+    const resultado = Plantilla.plantillaFormularioDeportista.actualiza(deportista);
+    
+    expect(resultado).toBe(resultadoEsperado);
   });
 });
+
+
 describe('Prueba de imprimeUnDeportista', function() {
   beforeEach(function () {
     // Crea un espía en las funciones que usará la prueba
@@ -570,24 +619,47 @@ describe('Prueba de imprimeUnDeportista', function() {
   });
 });
 
-describe('Prueba de deportistaComoFormulario', function() {
-it('llama a la función actualiza con el argumento correcto', function() {
-  spyOn(Plantilla.plantillaFormularioDeportista, 'actualiza');
+describe('Pruebas de deportistaComoFormulario', function() {
+  beforeEach(function() {
+    spyOn(Plantilla.plantillaFormularioDeportista, 'actualiza');
+  });
   
-  const deportista = {
-    nombre: 'Juan',
-    apellido: 'Pérez',
-    edad: 25,
-    deporte: 'natación'
-  };
-  const resultado = Plantilla.deportistaComoFormulario(deportista);
+  it('debe llamar a plantillaFormularioDeportista.actualiza con el argumento correcto', function() {
+    const deportista = {
+      nombre: 'Juan',
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
+    };
+    
+    Plantilla.deportistaComoFormulario(deportista);
+    
+    expect(Plantilla.plantillaFormularioDeportista.actualiza).toHaveBeenCalledWith(
+      deportista
+    );
+  });
   
-  expect(Plantilla.plantillaFormularioDeportista.actualiza).toHaveBeenCalledWith(
-    deportista
-  );
-  expect(resultado).toEqual(resultado);
+  it('debe devolver el resultado de plantillaFormularioDeportista.actualiza', function() {
+    const deportista = {
+      nombre: 'Juan',
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
+    };
+    
+    const resultadoEsperado = 'Un resultado cualquiera';
+    Plantilla.plantillaFormularioDeportista.actualiza.and.returnValue(resultadoEsperado);
+    
+    const resultado = Plantilla.deportistaComoFormulario(deportista);
+    
+    expect(resultado).toBe(resultadoEsperado);
+  });
 });
-});
+
 
 describe('Prueba para mostrar', function() {
   beforeEach(function () {
@@ -633,6 +705,16 @@ describe('Prueba de deportistaComoTabla', function() {
 
 //----------------------------------------------------------------------------------------------------------------------------------------
 //HU 13:Modificar varios de los datos a la vez de un jugador/equipo. Se deberán poder modificar al menos 3 campos además del nombre-------
+
+describe("Prueba de almacenaDatos", function() {
+  it("Almacena correctamente el objeto deportista en Plantilla.deportistaMostrado", function() {
+    var deportista = {nombre: "Juan", apellidos: "Martinez",fecha_nacimiento: { dia: 12, mes: 6, año: 1990 }, nacionalidad: "Española", años_de_participacion_mundial: [2014, 2018],numero_de_participaciones_juegos_olimpicos: 2 };
+    
+    Plantilla.almacenaDatos(deportista);
+    
+    expect(Plantilla.deportistaMostrado).toEqual(deportista);
+  });
+});
 
 
 //-----------------------------------------------------------------------------------------------------------
