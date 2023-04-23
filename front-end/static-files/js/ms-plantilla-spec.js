@@ -406,13 +406,13 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
                         name="apellidos"/></td>
-                <td><input type="text" class="form-deportista-elemento editable" disabled
+                <td><input type="text" class="form-deportista-elemento" disabled
                         id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
                         name="fecha_nacimiento"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-nacionalidad" required value="${Plantilla.plantillaTags.NACIONALIDAD}" 
                         name="nacionalidad"/></td>        
-                <td><input type="text" class="form-deportista-elemento editable" disabled
+                <td><input type="text" class="form-deportista-elemento" disabled
                         id="form-deportistas-años_de_p_mundial" required value="${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}" 
                         name="años_de_participacion_mundial"/></td>  
                 <td><input type="number" class="form-deportista-elemento editable" disabled
@@ -708,7 +708,14 @@ describe('Prueba de deportistaComoTabla', function() {
 
 describe("Prueba de almacenaDatos", function() {
   it("Almacena correctamente el objeto deportista en Plantilla.deportistaMostrado", function() {
-    var deportista = {nombre: "Juan", apellidos: "Martinez",fecha_nacimiento: { dia: 12, mes: 6, año: 1990 }, nacionalidad: "Española", años_de_participacion_mundial: [2014, 2018],numero_de_participaciones_juegos_olimpicos: 2 };
+    var deportista = {
+      nombre: "Juan",
+      apellidos: "Martinez",
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: "Española",
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2 
+    };
     
     Plantilla.almacenaDatos(deportista);
     
@@ -716,5 +723,347 @@ describe("Prueba de almacenaDatos", function() {
   });
 });
 
+describe("Prueba para recuperaDatosAlmacenados", function() {
+  it("debe devolver the deportistaMostrado almacenado", function() {
+    const deportista = {
+      nombre: "Juan",
+      apellidos: "Martinez",
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: "Española",
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2 
+    };
+  
+    Plantilla.deportistaMostrado = deportista;
+    
+    const resultado = Plantilla.recuperaDatosAlmacenados();
+  
+    expect(resultado).toBe(deportista);
+  });
+});
 
+describe("Pruebas para Plantilla.form", function() {
+  it("debe tener los cuatro campos definidos", function() {
+    expect(Plantilla.form).toBeDefined();
+    expect(Plantilla.form.NOMBRE).toBeDefined();
+    expect(Plantilla.form.APELLIDOS).toBeDefined();
+    expect(Plantilla.form.NACIONALIDAD).toBeDefined();
+    expect(Plantilla.form.NUM_JJOO).toBeDefined();
+  });
+  
+  it("debe tener los valores correspondientes", function() {
+    expect(Plantilla.form.NOMBRE).toBe("form-deportista-nombre");
+    expect(Plantilla.form.APELLIDOS).toBe("form-deportista-apellidos");
+    expect(Plantilla.form.NACIONALIDAD).toBe("form-deportista-nacionalidad");
+    expect(Plantilla.form.NUM_JJOO).toBe("form-deportista-numero_de_participaciones_juegos_olimpicos");
+  });
+});
+
+describe("Pruebas de habilitarDeshabilitarCamposEditables", function() {
+  let formElement1, formElement2, formElement3, formElement4;
+
+  beforeEach(function() {
+    // Crear elementos de formulario y agregarlos al DOM
+    formElement1 = document.createElement('input');
+    formElement1.id = 'form-deportista-nombre';
+    document.body.appendChild(formElement1);
+
+    formElement2 = document.createElement('input');
+    formElement2.id = 'form-deportista-apellidos';
+    document.body.appendChild(formElement2);
+
+    formElement3 = document.createElement('input');
+    formElement3.id = 'form-deportista-nacionalidad';
+    document.body.appendChild(formElement3);
+
+    formElement4 = document.createElement('input');
+    formElement4.id = 'form-deportista-numero_de_participaciones_juegos_olimpicos';
+    document.body.appendChild(formElement4);
+  });
+
+  afterEach(function() {
+    // Eliminar los elementos del formulario del DOM después de cada prueba.
+    document.body.removeChild(formElement1);
+    document.body.removeChild(formElement2);
+    document.body.removeChild(formElement3);
+    document.body.removeChild(formElement4);
+  });
+
+  it("debe habilitar todos los campos del formulario", function() {
+
+    Plantilla.habilitarDeshabilitarCamposEditables(false);
+
+    // Verificar que los campos estén habilitados
+    expect(document.getElementById('form-deportista-nombre').disabled).toBe(false);
+    expect(document.getElementById('form-deportista-apellidos').disabled).toBe(false);
+    expect(document.getElementById('form-deportista-nacionalidad').disabled).toBe(false);
+    expect(document.getElementById('form-deportista-numero_de_participaciones_juegos_olimpicos').disabled).toBe(false);
+  });
+
+  it("debe deshabilitar todos los campos del formulario", function() {
+
+    Plantilla.habilitarDeshabilitarCamposEditables(false);
+
+    Plantilla.habilitarDeshabilitarCamposEditables();
+
+    // Verificar que los campos estén deshabilitados
+    expect(document.getElementById('form-deportista-nombre').disabled).toBe(true);
+    expect(document.getElementById('form-deportista-apellidos').disabled).toBe(true);
+    expect(document.getElementById('form-deportista-nacionalidad').disabled).toBe(true);
+    expect(document.getElementById('form-deportista-numero_de_participaciones_juegos_olimpicos').disabled).toBe(true);
+  });
+}); 
+
+describe("Prueba de deshabilitarCamposEditables", function () {
+  it("debería llamar a habilitarDeshabilitarCamposEditables con false", function () {
+    spyOn(Plantilla, "habilitarDeshabilitarCamposEditables");
+    Plantilla.deshabilitarCamposEditables();
+    expect(Plantilla.habilitarDeshabilitarCamposEditables).toHaveBeenCalledWith(true);
+  });
+});
+
+describe("Prueba de habilitarCamposEditables", function () {
+  it("debería llamar a habilitarDeshabilitarCamposEditables con true", function () {
+    spyOn(Plantilla, "habilitarDeshabilitarCamposEditables");
+    Plantilla.habilitarCamposEditables();
+    expect(Plantilla.habilitarDeshabilitarCamposEditables).toHaveBeenCalledWith(false);
+  });
+});
+
+describe("Prueba para opcionesMostrarOcultar", function() {
+  // Creamos  elementos de prueba
+  let elemento1, elemento2, elemento3;
+
+  beforeEach(function() {
+    elemento1 = document.createElement('div');
+    elemento1.classList.add('clase-prueba');
+
+    elemento2 = document.createElement('span');
+    elemento2.classList.add('clase-prueba');
+
+    elemento3 = document.createElement('p');
+    elemento3.classList.add('clase-prueba');
+
+    document.body.appendChild(elemento1);
+    document.body.appendChild(elemento2);
+    document.body.appendChild(elemento3);
+    });
+
+  afterEach(function() {
+    document.body.removeChild(elemento1);
+    document.body.removeChild(elemento2);
+    document.body.removeChild(elemento3);
+    });
+
+  it("debería cambiar las clases de los elementos para mostrarlos u ocultarlos correctamente", function() {
+    Plantilla.opcionesMostrarOcultar('clase-prueba', false);
+
+    // Verificar que los elementos estén ocultos
+    expect(elemento1.classList.contains(Frontend.CLASS_OCULTAR)).toBe(true);
+    expect(elemento2.classList.contains(Frontend.CLASS_OCULTAR)).toBe(true);
+    expect(elemento3.classList.contains(Frontend.CLASS_OCULTAR)).toBe(true);
+
+    Plantilla.opcionesMostrarOcultar('clase-prueba', true);
+
+    // Verificar que los elementos estén visibles
+    expect(elemento1.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+    expect(elemento2.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+    expect(elemento3.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+    });
+});
+
+describe("Prueba de ocultarOpcionesSecundarias", function() {
+  // Crea algunos elementos de prueba
+  let elemento1, elemento2, elemento3;
+
+  beforeEach(function() {
+    elemento1 = document.createElement('div');
+    elemento1.classList.add('opcion-secundaria');
+
+    elemento2 = document.createElement('span');
+    elemento2.classList.add('opcion-secundaria');
+
+    elemento3 = document.createElement('p');
+    elemento3.classList.add('opcion-principal');
+
+    document.body.appendChild(elemento1);
+    document.body.appendChild(elemento2);
+    document.body.appendChild(elemento3);
+  });
+
+  afterEach(function() {
+    document.body.removeChild(elemento1);
+    document.body.removeChild(elemento2);
+    document.body.removeChild(elemento3);
+  });
+
+  it("debería ocultar todos los elementos con la clase 'opcion-secundaria'", function() {
+    // Llama a la función para ocultar las opciones secundarias.
+    Plantilla.ocultarOpcionesSecundarias();
+
+    // Verifica que los elementos con la clase 'opcion-secundaria' estén ocultos
+    expect(elemento1.classList.contains(Frontend.CLASS_OCULTAR)).toBe(true);
+    expect(elemento2.classList.contains(Frontend.CLASS_OCULTAR)).toBe(true);
+
+    // Verifica que el elemento con la clase 'opcion-principal' no este oculto
+    expect(elemento3.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+  });
+});
+
+describe("Prueba de mostrarOpcionesSecundarias", function() {
+  // Crea algunos elementos de prueba
+  let elemento1, elemento2, elemento3;
+
+  beforeEach(function() {
+    elemento1 = document.createElement('div');
+    elemento1.classList.add('opcion-secundaria');
+    elemento1.classList.add(Frontend.CLASS_OCULTAR);
+
+    elemento2 = document.createElement('span');
+    elemento2.classList.add('opcion-secundaria');
+    elemento2.classList.add(Frontend.CLASS_OCULTAR);
+
+    elemento3 = document.createElement('p');
+    elemento3.classList.add('opcion-principal');
+
+    document.body.appendChild(elemento1);
+    document.body.appendChild(elemento2);
+    document.body.appendChild(elemento3);
+  });
+
+  afterEach(function() {
+    document.body.removeChild(elemento1);
+    document.body.removeChild(elemento2);
+    document.body.removeChild(elemento3);
+  });
+
+  it("debería mostrar todos los elementos con la clase 'opcion-secundaria'", function() {
+    // Llama a la función para mostrar las opciones secundarias.
+    Plantilla.mostrarOpcionesSecundarias();
+
+    // Verifica que los elementos con la clase 'opcion-secundaria' esten visibles
+    expect(elemento1.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+    expect(elemento2.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+
+    // Verifica que el elemento con la clase 'opcion-principal' esten ocultos
+    expect(elemento3.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+  });
+});
+
+describe("Prueba para mostrarOcionesTerciariasEditar", function() {
+  // Crea algunos elementos de prueba
+  let elemento1, elemento2, elemento3;
+
+  beforeEach(function() {
+    elemento1 = document.createElement('div');
+    elemento1.classList.add('opcion-terciaria');
+    elemento1.classList.add('editar');
+    elemento1.classList.add(Frontend.CLASS_OCULTAR);
+
+    elemento2 = document.createElement('span');
+    elemento2.classList.add('opcion-terciaria');
+    elemento2.classList.add('editar');
+
+    elemento3 = document.createElement('p');
+    elemento3.classList.add('opcion-principal');
+
+    document.body.appendChild(elemento1);
+    document.body.appendChild(elemento2);
+    document.body.appendChild(elemento3);
+  });
+
+  afterEach(function() {
+    document.body.removeChild(elemento1);
+    document.body.removeChild(elemento2);
+    document.body.removeChild(elemento3);
+  });
+
+  it("debería mostrar todos los elementos con las clases 'opcion-terciaria' y 'editar'", function() {
+    // Llama a la función para mostrar las opciones terciarias
+    Plantilla.mostrarOcionesTerciariasEditar();
+
+    // Verifica que los elementos con las clases 'opcion-terciaria' y 'editar' esten visibles
+    expect(elemento1.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+    expect(elemento2.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+
+    // Verifica que el elemento con la clase 'opcion-principal' esten ocultos
+    expect(elemento3.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+  });
+});
+
+describe("Prueba para ocultarOcionesTerciariasEditar", function() {
+  // Crea algunos elementos de prueba
+  let elemento1, elemento2, elemento3;
+
+  beforeEach(function() {
+    elemento1 = document.createElement('div');
+    elemento1.classList.add('opcion-terciaria');
+    elemento1.classList.add('editar');
+    elemento1.classList.add(Frontend.CLASS_OCULTAR);
+
+    elemento2 = document.createElement('span');
+    elemento2.classList.add('opcion-terciaria');
+    elemento2.classList.add('editar');
+
+    elemento3 = document.createElement('p');
+    elemento3.classList.add('opcion-principal');
+
+    document.body.appendChild(elemento1);
+    document.body.appendChild(elemento2);
+    document.body.appendChild(elemento3);
+  });
+
+  afterEach(function() {
+    document.body.removeChild(elemento1);
+    document.body.removeChild(elemento2);
+    document.body.removeChild(elemento3);
+  });
+
+  it("debería mostrar todos los elementos con las clases 'opcion-terciaria' y 'editar'", function() {
+    // Llama a la función para ocultar las opciones terciarias
+    Plantilla.ocultarOcionesTerciariasEditar();
+
+    // Verifica que los elementos con las clases 'opcion-terciaria' y 'editar' esten ocultos
+    expect(elemento1.classList.contains(Frontend.CLASS_OCULTAR)).toBe(true);
+    expect(elemento2.classList.contains(Frontend.CLASS_OCULTAR)).toBe(true);
+
+    // Verifica que el elemento con la clase 'opcion-principal' esten visible
+    expect(elemento3.classList.contains(Frontend.CLASS_OCULTAR)).toBe(false);
+  });
+});
+
+describe("Prueba para editar", function() {
+
+  it("debería llamar a las funciones necesarias para editar la plantilla", function() {
+    spyOn(Plantilla, "ocultarOpcionesSecundarias");
+    spyOn(Plantilla, "mostrarOcionesTerciariasEditar");
+    spyOn(Plantilla, "habilitarCamposEditables");
+
+    Plantilla.editar();
+
+    expect(Plantilla.ocultarOpcionesSecundarias).toHaveBeenCalled();
+    expect(Plantilla.mostrarOcionesTerciariasEditar).toHaveBeenCalled();
+    expect(Plantilla.habilitarCamposEditables).toHaveBeenCalled();
+  });
+});
+
+describe("Prueba para cancelar", function() {
+
+  it("debería llamar a las funciones necesarias para cancelar la edición de la plantilla", function() {
+    spyOn(Plantilla, "imprimeUnDeportista");
+    spyOn(Plantilla, "deshabilitarCamposEditables");
+    spyOn(Plantilla, "ocultarOcionesTerciariasEditar");
+    spyOn(Plantilla, "mostrarOpcionesSecundarias");
+
+    Plantilla.cancelar();
+
+    expect(Plantilla.imprimeUnDeportista).toHaveBeenCalledWith(Plantilla.recuperaDatosAlmacenados());
+    expect(Plantilla.deshabilitarCamposEditables).toHaveBeenCalled();
+    expect(Plantilla.ocultarOcionesTerciariasEditar).toHaveBeenCalled();
+    expect(Plantilla.mostrarOpcionesSecundarias).toHaveBeenCalled();
+  });
+});
 //-----------------------------------------------------------------------------------------------------------
+ //HU 12: Modificar el nombre de un jugador/equipo.----------------------------------------------------------
+
+ //-----------------------------------------------------------------------------------------------------------

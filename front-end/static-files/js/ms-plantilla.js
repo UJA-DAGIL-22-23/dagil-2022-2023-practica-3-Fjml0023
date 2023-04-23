@@ -300,13 +300,13 @@ Plantilla.plantillaFormularioDeportista.formulario = `
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-apellidos" value="${Plantilla.plantillaTags.APELLIDOS}" 
                         name="apellidos"/></td>
-                <td><input type="text" class="form-deportista-elemento editable" disabled
+                <td><input type="text" class="form-deportista-elemento" disabled
                         id="form-deportista-f_nac" required value="${Plantilla.plantillaTags.FECHA_NAC}" 
                         name="fecha_nacimiento"/></td>
                 <td><input type="text" class="form-deportista-elemento editable" disabled
                         id="form-deportista-nacionalidad" required value="${Plantilla.plantillaTags.NACIONALIDAD}" 
                         name="nacionalidad"/></td>        
-                <td><input type="text" class="form-deportista-elemento editable" disabled
+                <td><input type="text" class="form-deportista-elemento" disabled
                         id="form-deportistas-años_de_p_mundial" required value="${Plantilla.plantillaTags["AÑOS_MUNDIAL"]}" 
                         name="años_de_participacion_mundial"/></td>  
                 <td><input type="number" class="form-deportista-elemento editable" disabled
