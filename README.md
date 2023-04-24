@@ -177,5 +177,5 @@ Funcioalidades del segundo incremento:
 Se ha hecho la historia de usuario 05 con sus respectivas pruebas de TDD.
 <img src='/Capturas_de_pantalla/Trello/Tablero_de_trello_tercer_incremento.JPG'>
 
-Funcioalidades del segundo incremento:
+Funcioalidades del tercer incremento:
 <img src='/Capturas_de_pantalla/Funcionalidades_Incremento3.JPG'>
