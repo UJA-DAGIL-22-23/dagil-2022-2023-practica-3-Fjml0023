@@ -318,10 +318,6 @@ Plantilla.plantillaFormularioDeportista.formulario = `
                     <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar varios campos</a></div>
                     <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
                     <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
-                    <div>
-                    <button id="botonAnterior">Retroceder</button>
-                    <button id="botonSiguiente">Avanzar</button>
-                    </div>
                 </td>
             </tr>
         </tbody>
@@ -654,54 +650,143 @@ Plantilla.habilitarDeshabilitarCampoNombre = function (deshabilitando) {
 Plantilla.formNombre = {
     NOMBRE: "form-deportista-nombre",
 }
- //-----------------------------------------------------------------------------------------------------------
-// HU 07:Ver los datos de un determinado jugador/equipo, cambiando con un solo click para ver los datos del anterior o del siguiente.
  
-//-----------------------------------------------------------------------------------------------------------
-/*
-Plantilla.recuperaUnoPorUno = async function (posicion, callBackFn) {
-    let response = null
-
-    // Intento conectar con el microservicio deportistas
-    try {
-        const url = Frontend.API_GATEWAY + "/plantilla/getTodas"
-        response = await fetch(url)
-
-    } catch (error) {
-        alert("Error: No se han podido acceder al API Gateway")
-        console.error(error)
-        //throw error
-    }
-
-    // Muestro todas las persoans que se han descargado
-    let vectorDeportistas = null
-    if (response) {
-        vectorDeportistas = await response.json()
-        if( posicion>=vectorDeportistas.data.length ) posicion=0
-        callBackFn(vectorDeportistas.data[posicion])
-    }
-}
-Plantilla.listarUnoPorUno = function (posicion) {
-    this.recuperaUnoPorUno(posicion, this.imprimeUnDeportista);
- }
- Plantilla.avanzar = function(){
-    posicionActual++; // Incrementar posición actual
-    Plantilla.listarUnoPorUno(posicionActual);
+ //-----------------------------------------------------------------------------------------------------------
+ //HU 05:Ver un listado con todos los datos de todos los jugadores/equipos ordenado por el campo del jugador/equipo que el usuario desee.
+ 
+ Plantilla.listarOrNombre = function () {
+    this.recupera(this.imprimeOrdenadoNombre);
  }
 
- Plantilla.retroceder = function () {
-    if (posicionActual > 0) { // Solo retroceder si no estamos en la primera posición
-      posicionActual--; // Decrementar posición actual
-      Plantilla.listarUnoPorUno(posicionActual); // Llamar a listarUnoPorUno con nueva posición actual
-    }
+Plantilla.imprimeOrdenadoNombre = function (vector) {
+    // Ordenar el vector por nombre
+    vector.sort(function(a, b){
+        return a.data.nombre.localeCompare(b.data.nombre);
+    });
+  
+    // Compongo el contenido que se va a mostrar dentro de la tabla
+    let msj = Plantilla.plantillaTablaDeportistas.cabecera
+    vector.forEach(e => msj += Plantilla.plantillaTablaDeportistas.actualiza(e))
+    msj += Plantilla.plantillaTablaDeportistas.pie
+  
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Listado de deportistas", msj)
   }
 
-  // Obtener referencias a los botones anteriores
-const botonAnterior = document.getElementById("botonAnterior");
-const botonSiguiente = document.getElementById("botonSiguiente");
+  Plantilla.listarOrApellidos = function () {
+    this.recupera(this.imprimeOrdenadoApellidos);
+ }
 
-// Agregar eventos onclick a los botones
-botonAnterior.onclick = Plantilla.retroceder;
-botonSiguiente.onclick = Plantilla.avanzar;
-*/
+
+ Plantilla.imprimeOrdenadoApellidos = function (vector) {
+    // Ordenar el vector por apellidos (de mayor a menor)
+    vector.sort(function(a, b){
+        return a.data.apellidos.localeCompare(b.data.apellidos);
+    });
+  
+    // Compongo el contenido que se va a mostrar dentro de la tabla
+    let msj = Plantilla.plantillaTablaDeportistas.cabecera
+    vector.forEach(e => msj += Plantilla.plantillaTablaDeportistas.actualiza(e))
+    msj += Plantilla.plantillaTablaDeportistas.pie
+  
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Listado de deportistas", msj)
+  }
+
+
+  Plantilla.listarOrFecha = function () {
+    this.recupera(this.imprimeOrdenadoFechaNacimiento);
+ }
+
+  Plantilla.imprimeOrdenadoFechaNacimiento = function (vector) {
+    // Ordenar el vector por fecha de nacimiento (de mayor a menor)
+    vector.sort(function(a, b){
+        const fechaA = new Date(
+          parseInt(a.data.fecha_nacimiento.año), 
+          parseInt(a.data.fecha_nacimiento.mes) - 1,
+          parseInt(a.data.fecha_nacimiento.dia)
+        );
+        const fechaB = new Date(
+          parseInt(b.data.fecha_nacimiento.año), 
+          parseInt(b.data.fecha_nacimiento.mes) - 1,
+          parseInt(b.data.fecha_nacimiento.dia)
+        );
+    
+        return fechaA - fechaB; 
+      });
+  
+    // Compongo el contenido que se va a mostrar dentro de la tabla
+    let msj = Plantilla.plantillaTablaDeportistas.cabecera;
+    vector.forEach(e => msj += Plantilla.plantillaTablaDeportistas.actualiza(e));
+    msj += Plantilla.plantillaTablaDeportistas.pie;
+  
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Listado de deportistas", msj);
+  }
+  
+  Plantilla.listarOrNacionalidad = function () {
+    this.recupera(this.imprimeOrdenadoNacionalidad);
+ }
+  Plantilla.imprimeOrdenadoNacionalidad = function (vector) {
+    // Ordenar el vector por nacionalidad
+    vector.sort(function(a, b){
+        return a.data.nacionalidad.localeCompare(b.data.nacionalidad);
+    });
+  
+    // Compongo el contenido que se va a mostrar dentro de la tabla
+    let msj = Plantilla.plantillaTablaDeportistas.cabecera;
+    vector.forEach(e => msj += Plantilla.plantillaTablaDeportistas.actualiza(e));
+    msj += Plantilla.plantillaTablaDeportistas.pie;
+  
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Listado de deportistas", msj);
+  }
+  
+  Plantilla.listarOrAniosMuldial = function () {
+    this.recupera(this.imprimeOrdenadoAniosParticipacionMundial);
+ }
+
+  Plantilla.imprimeOrdenadoAniosParticipacionMundial = function (vector) {
+    // Ordenar el vector por años_de_participacion_mundial (primero por el primero, luego por el segundo si son iguales)
+    vector.sort(function(a, b){
+        const añosA = parseInt(a.data.años_de_participacion_mundial);
+        const añosB = parseInt(b.data.años_de_participacion_mundial);
+    
+        return añosB - añosA; // La función de comparación devuelve un número positivo si a > b.
+      });
+  
+    // Compongo el contenido que se va a mostrar dentro de la tabla
+    let msj = Plantilla.plantillaTablaDeportistas.cabecera
+    vector.forEach(e => msj += Plantilla.plantillaTablaDeportistas.actualiza(e))
+    msj += Plantilla.plantillaTablaDeportistas.pie
+  
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Listado de deportistas", msj)
+  }
+  
+
+  Plantilla.listarOrNumJJOO = function () {
+    this.recupera(this.imprimeOrdenadoNumParticipacionesJO);
+ }
+
+  Plantilla.imprimeOrdenadoNumParticipacionesJO = function (vector) {
+    // Ordenar el vector por número de participaciones en Juegos Olímpicos (de mayor a menor)
+
+    vector.sort(function(a, b){
+        const participacionesA = parseInt(a.data.numero_de_participaciones_juegos_olimpicos);
+        const participacionesB = parseInt(b.data.numero_de_participaciones_juegos_olimpicos);
+    
+        return participacionesB - participacionesA; // La función de comparación devuelve un número positivo si a > b.
+      });
+  
+    // Compongo el contenido que se va a mostrar dentro de la tabla
+    let msj = Plantilla.plantillaTablaDeportistas.cabecera;
+    vector.forEach(e => msj += Plantilla.plantillaTablaDeportistas.actualiza(e));
+    msj += Plantilla.plantillaTablaDeportistas.pie;
+  
+    // Borro toda la info de Article y la sustituyo por la que me interesa
+    Frontend.Article.actualizar("Listado de deportistas", msj);
+  }
+  
+  
  //-----------------------------------------------------------------------------------------------------------

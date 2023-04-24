@@ -424,10 +424,6 @@ describe("Prueba para plantillaFormularioDeportista.formulario HU 06", function(
                     <div><a href="javascript:Plantilla.editar()" class="opcion-secundaria mostrar">Editar varios campos</a></div>
                     <div><a href="javascript:Plantilla.guardar()" class="opcion-terciaria editar ocultar">Guardar</a></div>
                     <div><a href="javascript:Plantilla.cancelar()" class="opcion-terciaria editar ocultar">Cancelar</a></div>
-                    <div>
-                    <button id="botonAnterior">Retroceder</button>
-                    <button id="botonSiguiente">Avanzar</button>
-                    </div>
                 </td>
             </tr>
         </tbody>
@@ -581,9 +577,11 @@ describe('Prueba de imprimeUnDeportista', function() {
   it('debería llamar a Plantilla.deportistaComoFormulario con el deportista correcto', function() {    
     const deportista = {
       nombre: 'Juan',
-      apellido: 'Pérez',
-      edad: 25,
-      deporte: 'natación'
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
     }
 
     Plantilla.imprimeUnDeportista(deportista);
@@ -594,9 +592,11 @@ describe('Prueba de imprimeUnDeportista', function() {
   it('debería llamar a Frontend.Article.actualizar con los parámetros correctos', function() {    
     const deportista = {
       nombre: 'Juan',
-      apellido: 'Pérez',
-      edad: 25,
-      deporte: 'natación'
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
     }
     const formularioMock = '<form>Mocked form</form>';
 
@@ -608,9 +608,11 @@ describe('Prueba de imprimeUnDeportista', function() {
   it('debería llamar a Plantilla.almacenaDatos con el deportista correcto', function() {    
     const deportista = {
       nombre: 'Juan',
-      apellido: 'Pérez',
-      edad: 25,
-      deporte: 'natación'
+      apellidos: 'Pérez Santos',
+      fecha_nacimiento: { dia: 12, mes: 6, año: 1990 },
+      nacionalidad: 'Español',
+      años_de_participacion_mundial: [2014, 2018],
+      numero_de_participaciones_juegos_olimpicos: 2
     }
 
     Plantilla.imprimeUnDeportista(deportista);
@@ -1138,6 +1140,385 @@ describe('Prueba de habilitarCampoNombre', function() {
       });
     });
   
-
-
  //-----------------------------------------------------------------------------------------------------------
+  //HU 05:Ver un listado con todos los datos de todos los jugadores/equipos ordenado por el campo del jugador/equipo que el usuario desee.
+
+describe("Prueba de listarOrNombre", function() {
+  it("debe llamar a recupera con imprimeOrdenadoNombre como argumento", function() {
+    spyOn(Plantilla, "recupera");
+    spyOn(Plantilla, "imprimeOrdenadoNombre");
+
+    Plantilla.listarOrNombre();
+
+    expect(Plantilla.recupera).toHaveBeenCalled();
+    expect(Plantilla.recupera.calls.argsFor(0)[0]).toBe(Plantilla.imprimeOrdenadoNombre);
+  });
+});
+
+describe("Prueba de imprimeOrdenadoNombre", function() {
+  it("debería ordenar el vector por nombre ", function() {
+    // Crear datos simulados
+    const deportista1 = {
+      ref: { "@ref": { id: "abc123" } },
+      data: {
+        nombre: "Luisa",
+        apellidos: "Pérez",
+        fecha_nacimiento: { dia: 10, mes: 5, año: 1990 },
+        nacionalidad: "Mexico",
+        años_de_participacion_mundial: 2,
+        numero_de_participaciones_juegos_olimpicos: 1
+      }
+    };
+    const deportista2 = {
+      ref: { "@ref": { id: "def456" } },
+      data: {
+        nombre: "Juan",
+        apellidos: "García",
+        fecha_nacimiento: { dia: 25, mes: 7, año: 1995 },
+        nacionalidad: "Colombia",
+        años_de_participacion_mundial: 1,
+        numero_de_participaciones_juegos_olimpicos: 3
+      }
+    };
+    const deportista3 = {
+      ref: { "@ref": { id: "ghi789" } },
+      data: {
+        nombre: "Pedro",
+        apellidos: "Rodriguez",
+        fecha_nacimiento: { dia: 12, mes: 3, año: 1985 },
+        nacionalidad: "Argentina",
+        años_de_participacion_mundial: 4,
+        numero_de_participaciones_juegos_olimpicos: 2
+      }
+    };
+
+    const vectorDesordenado = [deportista2, deportista3, deportista1];
+
+    // Llamar a la función que se va a probar
+    Plantilla.imprimeOrdenadoNombre(vectorDesordenado);
+
+    // Comprobar que el vector se ha ordenado correctamente y se ha actualizado el contenido de Article
+    expect(vectorDesordenado[0].data.nombre).toEqual(deportista2.data.nombre);
+    expect(vectorDesordenado[1].data.nombre).toEqual(deportista1.data.nombre);
+    expect(vectorDesordenado[2].data.nombre).toEqual(deportista3.data.nombre);
+    
+  });
+});
+
+
+describe("listarOrApellidos", function() {
+  it("debe llamar a recupera con imprimeOrdenadoApellidos como argumento", function() {
+    spyOn(Plantilla, "recupera");
+    spyOn(Plantilla, "imprimeOrdenadoApellidos");
+
+    Plantilla.listarOrApellidos();
+
+    expect(Plantilla.recupera).toHaveBeenCalled();
+    expect(Plantilla.recupera.calls.argsFor(0)[0]).toBe(Plantilla.imprimeOrdenadoApellidos);
+  });
+});
+
+describe("Prueba de imprimeOrdenadoApellidos", function() {
+  it("debería ordenar el vector por apellidos ", function() {
+    // Crear datos simulados
+    const deportista1 = {
+      ref: { "@ref": { id: "abc123" } },
+      data: {
+        nombre: "Luisa",
+        apellidos: "Pérez",
+        fecha_nacimiento: { dia: 10, mes: 5, año: 1990 },
+        nacionalidad: "Mexico",
+        años_de_participacion_mundial: 2,
+        numero_de_participaciones_juegos_olimpicos: 1
+      }
+    };
+    const deportista2 = {
+      ref: { "@ref": { id: "def456" } },
+      data: {
+        nombre: "Juan",
+        apellidos: "García",
+        fecha_nacimiento: { dia: 25, mes: 7, año: 1995 },
+        nacionalidad: "Colombia",
+        años_de_participacion_mundial: 1,
+        numero_de_participaciones_juegos_olimpicos: 3
+      }
+    };
+    const deportista3 = {
+      ref: { "@ref": { id: "ghi789" } },
+      data: {
+        nombre: "Pedro",
+        apellidos: "Rodriguez",
+        fecha_nacimiento: { dia: 12, mes: 3, año: 1985 },
+        nacionalidad: "Argentina",
+        años_de_participacion_mundial: 4,
+        numero_de_participaciones_juegos_olimpicos: 2
+      }
+    };
+
+    const vectorDesordenado = [deportista2, deportista3, deportista1];
+
+    // Llamar a la función que se va a probar
+    Plantilla.imprimeOrdenadoApellidos(vectorDesordenado);
+
+    // Comprobar que el vector se ha ordenado correctamente y se ha actualizado el contenido de Article
+    expect(vectorDesordenado[0].data.apellidos).toEqual(deportista2.data.apellidos);
+    expect(vectorDesordenado[1].data.apellidos).toEqual(deportista1.data.apellidos);
+    expect(vectorDesordenado[2].data.apellidos).toEqual(deportista3.data.apellidos);
+    
+  });
+});
+
+
+describe("listarOrFecha", function() {
+  it("debe llamar a recupera con imprimeOrdenadoFechaNacimiento como argumento", function() {
+    spyOn(Plantilla, "recupera");
+    spyOn(Plantilla, "imprimeOrdenadoFechaNacimiento");
+
+    Plantilla.listarOrFecha();
+
+    expect(Plantilla.recupera).toHaveBeenCalled();
+    expect(Plantilla.recupera.calls.argsFor(0)[0]).toBe(Plantilla.imprimeOrdenadoFechaNacimiento);
+  });
+});
+
+describe("Prueba de imprimeOrdenadoFechaNacimiento", function() {
+  it("debería ordenar el vector por fecha de nacimiento ", function() {
+    // Crear datos simulados
+    const deportista1 = {
+      ref: { "@ref": { id: "abc123" } },
+      data: {
+        nombre: "Luisa",
+        apellidos: "Pérez",
+        fecha_nacimiento: { dia: 10, mes: 5, año: 1990 },
+        nacionalidad: "Mexico",
+        años_de_participacion_mundial: 2,
+        numero_de_participaciones_juegos_olimpicos: 1
+      }
+    };
+    const deportista2 = {
+      ref: { "@ref": { id: "def456" } },
+      data: {
+        nombre: "Juan",
+        apellidos: "García",
+        fecha_nacimiento: { dia: 25, mes: 7, año: 1995 },
+        nacionalidad: "Colombia",
+        años_de_participacion_mundial: 1,
+        numero_de_participaciones_juegos_olimpicos: 3
+      }
+    };
+    const deportista3 = {
+      ref: { "@ref": { id: "ghi789" } },
+      data: {
+        nombre: "Pedro",
+        apellidos: "Rodriguez",
+        fecha_nacimiento: { dia: 12, mes: 3, año: 1985 },
+        nacionalidad: "Argentina",
+        años_de_participacion_mundial: 4,
+        numero_de_participaciones_juegos_olimpicos: 2
+      }
+    };
+
+    const vectorDesordenado = [deportista2, deportista3, deportista1];
+
+    // Llamar a la función que se va a probar
+    Plantilla.imprimeOrdenadoFechaNacimiento(vectorDesordenado);
+
+    // Comprobar que el vector se ha ordenado correctamente y se ha actualizado el contenido de Article
+    const fechaNacimientoDeportista1 = new Date(1990, 4, 10);
+    const fechaNacimientoDeportista2 = new Date(1995, 6, 25);
+    const fechaNacimientoDeportista3 = new Date(1985, 2, 12);
+    expect(new Date(vectorDesordenado[0].data.fecha_nacimiento.año, vectorDesordenado[0].data.fecha_nacimiento.mes - 1, vectorDesordenado[0].data.fecha_nacimiento.dia)).toEqual(fechaNacimientoDeportista3);
+    expect(new Date(vectorDesordenado[1].data.fecha_nacimiento.año, vectorDesordenado[1].data.fecha_nacimiento.mes - 1, vectorDesordenado[1].data.fecha_nacimiento.dia)).toEqual(fechaNacimientoDeportista1);
+    expect(new Date(vectorDesordenado[2].data.fecha_nacimiento.año, vectorDesordenado[2].data.fecha_nacimiento.mes - 1, vectorDesordenado[2].data.fecha_nacimiento.dia)).toEqual(fechaNacimientoDeportista2);
+    
+  });
+});
+
+
+describe("listarOrNacionalidad", function() {
+  it("debe llamar a recupera con imprimeOrdenadoNacionalidad como argumento", function() {
+    spyOn(Plantilla, "recupera");
+    spyOn(Plantilla, "imprimeOrdenadoNacionalidad");
+
+    Plantilla.listarOrNacionalidad();
+
+    expect(Plantilla.recupera).toHaveBeenCalled();
+    expect(Plantilla.recupera.calls.argsFor(0)[0]).toBe(Plantilla.imprimeOrdenadoNacionalidad);
+  });
+});
+
+describe("Prueba de imprimeOrdenadoNacionalidad", function() {
+  it("debería ordenar el vector por nacionalidad ", function() {
+    // Crear datos simulados
+    const deportista1 = {
+      ref: { "@ref": { id: "abc123" } },
+      data: {
+        nombre: "Luisa",
+        apellidos: "Pérez",
+        fecha_nacimiento: { dia: 10, mes: 5, año: 1990 },
+        nacionalidad: "Mexico",
+        años_de_participacion_mundial: 2,
+        numero_de_participaciones_juegos_olimpicos: 1
+      }
+    };
+    const deportista2 = {
+      ref: { "@ref": { id: "def456" } },
+      data: {
+        nombre: "Juan",
+        apellidos: "García",
+        fecha_nacimiento: { dia: 25, mes: 7, año: 1995 },
+        nacionalidad: "Colombia",
+        años_de_participacion_mundial: 1,
+        numero_de_participaciones_juegos_olimpicos: 3
+      }
+    };
+    const deportista3 = {
+      ref: { "@ref": { id: "ghi789" } },
+      data: {
+        nombre: "Pedro",
+        apellidos: "Rodriguez",
+        fecha_nacimiento: { dia: 12, mes: 3, año: 1985 },
+        nacionalidad: "Argentina",
+        años_de_participacion_mundial: 4,
+        numero_de_participaciones_juegos_olimpicos: 2
+      }
+    };
+
+    const vectorDesordenado = [deportista2, deportista3, deportista1];
+
+    // Llamar a la función que se va a probar
+    Plantilla.imprimeOrdenadoNacionalidad(vectorDesordenado);
+
+    // Comprobar que el vector se ha ordenado correctamente y se ha actualizado el contenido de Article
+    expect(vectorDesordenado[0].data.nacionalidad).toEqual("Argentina");
+    expect(vectorDesordenado[1].data.nacionalidad).toEqual("Colombia");
+    expect(vectorDesordenado[2].data.nacionalidad).toEqual("Mexico");
+    
+  });
+});
+
+  
+describe("listarOrAniosMuldial", function() {
+  it("debe llamar a recupera con imprimeOrdenadoAniosParticipacionMundial como argumento", function() {
+    spyOn(Plantilla, "recupera");
+    spyOn(Plantilla, "imprimeOrdenadoAniosParticipacionMundial");
+
+    Plantilla.listarOrAniosMuldial();
+
+    expect(Plantilla.recupera).toHaveBeenCalled();
+    expect(Plantilla.recupera.calls.argsFor(0)[0]).toBe(Plantilla.imprimeOrdenadoAniosParticipacionMundial);
+  });
+});
+
+describe("Prueba de imprimeOrdenadoAniosParticipacionMundial", function() {
+  it("debería ordenar el vector por años_de_participación_mundial ", function() {
+    // Crear datos simulados
+    const deportista1 = {
+      ref: { "@ref": { id: "abc123" } },
+      data: {
+        nombre: "Luisa",
+        apellidos: "Pérez",
+        fecha_nacimiento: { dia: 10, mes: 5, año: 1990 },
+        nacionalidad: "Mexico",
+        años_de_participacion_mundial: 2,
+        numero_de_participaciones_juegos_olimpicos: 1
+      }
+    };
+    const deportista2 = {
+      ref: { "@ref": { id: "def456" } },
+      data: {
+        nombre: "Juan",
+        apellidos: "García",
+        fecha_nacimiento: { dia: 25, mes: 7, año: 1995 },
+        nacionalidad: "Colombia",
+        años_de_participacion_mundial: 1,
+        numero_de_participaciones_juegos_olimpicos: 3
+      }
+    };
+    const deportista3 = {
+      ref: { "@ref": { id: "ghi789" } },
+      data: {
+        nombre: "Pedro",
+        apellidos: "Rodriguez",
+        fecha_nacimiento: { dia: 12, mes: 3, año: 1985 },
+        nacionalidad: "Argentina",
+        años_de_participacion_mundial: 4,
+        numero_de_participaciones_juegos_olimpicos: 2
+      }
+    };
+
+    const vectorDesordenado = [deportista2, deportista3, deportista1];
+
+    // Llamar a la función que se va a probar
+    Plantilla.imprimeOrdenadoAniosParticipacionMundial(vectorDesordenado);
+
+    // Comprobar que el vector se ha ordenado correctamente y se ha actualizado el contenido de Article
+    expect(vectorDesordenado[0].data.años_de_participacion_mundial).toEqual(4);
+    expect(vectorDesordenado[1].data.años_de_participacion_mundial).toEqual(2);
+    expect(vectorDesordenado[2].data.años_de_participacion_mundial).toEqual(1);
+  });
+});
+
+
+describe("listarOrNumJJOO", function() {
+  it("debe llamar a recupera con imprimeOrdenadoNumParticipacionesJO como argumento", function() {
+    spyOn(Plantilla, "recupera");
+    spyOn(Plantilla, "imprimeOrdenadoNumParticipacionesJO");
+
+    Plantilla.listarOrNumJJOO();
+
+    expect(Plantilla.recupera).toHaveBeenCalled();
+    expect(Plantilla.recupera.calls.argsFor(0)[0]).toBe(Plantilla.imprimeOrdenadoNumParticipacionesJO);
+  });
+});
+
+describe("Prueba de imprimeOrdenadoNumParticipacionesJO", function() {
+  it("debería ordenar el vector por número de participaciones en Juegos Olímpicos ", function() {
+    // Crear datos simulados
+    const deportista1 = {
+      ref: { "@ref": { id: "abc123" } },
+      data: {
+        nombre: "Luisa",
+        apellidos: "Pérez",
+        fecha_nacimiento: { dia: 10, mes: 5, año: 1990 },
+        nacionalidad: "Mexico",
+        años_de_participacion_mundial: 2,
+        numero_de_participaciones_juegos_olimpicos: 1
+      }
+    };
+    const deportista2 = {
+      ref: { "@ref": { id: "def456" } },
+      data: {
+        nombre: "Juan",
+        apellidos: "García",
+        fecha_nacimiento: { dia: 25, mes: 7, año: 1995 },
+        nacionalidad: "Colombia",
+        años_de_participacion_mundial: 1,
+        numero_de_participaciones_juegos_olimpicos: 3
+      }
+    };
+    const deportista3 = {
+      ref: { "@ref": { id: "ghi789" } },
+      data: {
+        nombre: "Pedro",
+        apellidos: "Rodriguez",
+        fecha_nacimiento: { dia: 12, mes: 3, año: 1985 },
+        nacionalidad: "Argentina",
+        años_de_participacion_mundial: 4,
+        numero_de_participaciones_juegos_olimpicos: 2
+      }
+    };
+
+    const vectorDesordenado = [deportista1, deportista3, deportista2];
+
+    // Llamar a la función que se va a probar
+    Plantilla.imprimeOrdenadoNumParticipacionesJO(vectorDesordenado);
+
+    // Comprobar que el vector se ha ordenado correctamente y se ha actualizado el contenido de Article
+    expect(vectorDesordenado[0].data.numero_de_participaciones_juegos_olimpicos).toEqual(3);
+    expect(vectorDesordenado[1].data.numero_de_participaciones_juegos_olimpicos).toEqual(2);
+    expect(vectorDesordenado[2].data.numero_de_participaciones_juegos_olimpicos).toEqual(1);
+  });
+});
+
+  

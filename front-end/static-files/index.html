@@ -29,16 +29,28 @@
         <!-- MIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO-->
         <a href="javascript:Plantilla.listar()" class="opcion-principal mostrar"
             title="Realiza un listado de todas los deportistas que hay en la BBDD">Listar deportistas</a>
-        <a href="javascript:Plantilla.listarUnoPorUno(0)" class="opcion-principal mostrar"
-            title="Realiza un listado de todas los deportistas que hay en la BBDD">Listar deportistas con botones</a>
         <a href="javascript:Plantilla.listarnombre()" class="opcion-principal mostrar"
             title="Realiza un listado de todas los nombres de deportistas que hay en la BBDD">Listar nombres deportistas</a>
         <a href="javascript:Plantilla.listarnombreordenado()" class="opcion-principal mostrar"
             title="Realiza un listado de todas los nombres de deportistas que hay en la BBDD ordenados alfabeticamente">Listar nombres ordenados alfabeticamente</a>
         <a href="javascript:Plantilla.mostrar('359174888402976973')" class="opcion-principal mostrar"
             title="Muestra los datos de un deportista como ejemplo">Mostrar un deportista de ejemplo</a>
+              
+            <label for="order-by-select">Ordenar listado de deportistas por:</label>
+        <select id="order-by-select" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+            <option value="">Selecciona una opción</option>
+            <option value="javascript:Plantilla.listarOrNombre()">Nombre</option>
+            <option value="javascript:Plantilla.listarOrApellidos()">Apellido</option>
+            <option value="javascript:Plantilla.listarOrFecha()">Fecha de nacimiento</option>
+            <option value="javascript:Plantilla.listarOrNacionalidad()">Nacionalidad</option>
+            <option value="javascript:Plantilla.listarOrAniosMuldial()">Años en mundiales</option>
+            <option value="javascript:Plantilla.listarOrNumJJOO()">Número de participacion en JJOO</option>
+        </select>
+
         <!-- MIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO-->
+        
     </nav>
+    
 
     <!-- 
         Article en el que se va a mostrar la info cuando se pinche una opción del menú 
